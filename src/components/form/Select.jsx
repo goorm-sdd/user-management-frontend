@@ -1,20 +1,20 @@
-import { useState } from "react";
+import { useState } from "react"
 
 const Select = ({
   options,
   placeholder = "Select an option",
   onChange,
   className = "",
-  defaultValue = "",
+  defaultValue = ""
 }) => {
   // Manage the selected value
-  const [selectedValue, setSelectedValue] = useState<string>(defaultValue);
+  const [selectedValue, setSelectedValue] = useState(defaultValue)
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setSelectedValue(value);
-    onChange(value); // Trigger parent handler
-  };
+  const handleChange = e => {
+    const value = e.target.value
+    setSelectedValue(value)
+    onChange(value) // Trigger parent handler
+  }
 
   return (
     <select
@@ -35,7 +35,7 @@ const Select = ({
         {placeholder}
       </option>
       {/* Map over options */}
-      {options.map((option) => (
+      {options.map(option => (
         <option
           key={option.value}
           value={option.value}
@@ -45,7 +45,7 @@ const Select = ({
         </option>
       ))}
     </select>
-  );
-};
+  )
+}
 
-export default Select;
+export default Select
