@@ -13,7 +13,7 @@ export default function UserMetaCard() {
   };
   return (
     <>
-      <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
+      <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6 bg-white">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
           <div className="flex flex-col items-center w-full gap-6 xl:flex-row">
             <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
@@ -164,26 +164,26 @@ export default function UserMetaCard() {
                     <Label>Facebook</Label>
                     <Input
                       type="text"
-                      value="https://www.facebook.com/PimjoHQ"
+                      placeholder="https://www.facebook.com/PimjoHQ"
                     />
                   </div>
 
                   <div>
                     <Label>X.com</Label>
-                    <Input type="text" value="https://x.com/PimjoHQ" />
+                    <Input type="text" placeholder="https://x.com/PimjoHQ" />
                   </div>
 
                   <div>
                     <Label>Linkedin</Label>
                     <Input
                       type="text"
-                      value="https://www.linkedin.com/company/pimjo"
+                      placeholder="https://www.linkedin.com/company/pimjo"
                     />
                   </div>
 
                   <div>
                     <Label>Instagram</Label>
-                    <Input type="text" value="https://instagram.com/PimjoHQ" />
+                    <Input type="text" placeholder="https://instagram.com/PimjoHQ" />
                   </div>
                 </div>
               </div>
@@ -195,27 +195,27 @@ export default function UserMetaCard() {
                 <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
                   <div className="col-span-2 lg:col-span-1">
                     <Label>First Name</Label>
-                    <Input type="text" value="Musharof" />
+                    <Input type="text" placeholder="Musharof" />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Last Name</Label>
-                    <Input type="text" value="Chowdhury" />
+                    <Input type="text" placeholder="Chowdhury" />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Email Address</Label>
-                    <Input type="text" value="randomuser@pimjo.com" />
+                    <Input type="text" placeholder="randomuser@pimjo.com" />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Phone</Label>
-                    <Input type="text" value="+09 363 398 46" />
+                    <Input type="text" placeholder="+09 363 398 46" />
                   </div>
 
                   <div className="col-span-2">
                     <Label>Bio</Label>
-                    <Input type="text" value="Team Manager" />
+                    <Input type="text" placeholder="Team Manager" />
                   </div>
                 </div>
               </div>

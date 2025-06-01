@@ -13,7 +13,7 @@ export default function UserAddressCard() {
   };
   return (
     <>
-      <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
+      <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6 bg-white">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-6">
@@ -97,22 +97,22 @@ export default function UserAddressCard() {
               <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
                 <div>
                   <Label>Country</Label>
-                  <Input type="text" value="United States" />
+                  <Input placeholder="United States" />
                 </div>
 
                 <div>
                   <Label>City/State</Label>
-                  <Input type="text" value="Arizona, United States." />
+                  <Input type="text" placeholder="Arizona, United States." />
                 </div>
 
                 <div>
                   <Label>Postal Code</Label>
-                  <Input type="text" value="ERT 2489" />
+                  <Input type="text" placeholder="ERT 2489" />
                 </div>
 
                 <div>
                   <Label>TAX ID</Label>
-                  <Input type="text" value="AS4568384" />
+                  <Input type="text" placeholder="AS4568384" />
                 </div>
               </div>
             </div>

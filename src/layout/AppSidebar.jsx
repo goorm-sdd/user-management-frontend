@@ -3,16 +3,14 @@ import { Link, useLocation } from "react-router"
 
 // Assume these icons are imported from an icon library
 import {
-  BoxCubeIcon,
-  CalenderIcon,
   ChevronDownIcon,
   GridIcon,
   HorizontaLDots,
   ListIcon,
   PageIcon,
-  PieChartIcon,
   PlugInIcon,
   TableIcon,
+  BoltIcon,
   UserCircleIcon
 } from "../icons"
 import { useSidebar } from "../context/SidebarContext"
@@ -20,41 +18,51 @@ import { useSidebar } from "../context/SidebarContext"
 const navItems = [
   {
     icon: <GridIcon />,
-    name: "Dashboard",
-    subItems: [{ name: "Ecommerce", path: "/", pro: false }]
+    name: "대시보드",
+    path: "/"
   },
   {
     icon: <UserCircleIcon />,
-    name: "User Profile",
+    name: "회원 정보",
     path: "/profile"
   },
   {
-    name: "Forms",
-    icon: <ListIcon />,
-    subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }]
-  },
-  {
-    name: "Tables",
     icon: <TableIcon />,
-    subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }]
+    name: "전체 회원",
+    path: "/user-tables" 
   },
   {
-    name: "Pages",
-    icon: <PageIcon />,
+    name: "탈퇴 회원",
+    icon: <ListIcon />,
+    path: "/delete-user"
+  },
+  {
+    name: "회원 가입",
+    icon: <BoltIcon />,
     subItems: [
-      { name: "Blank Page", path: "/blank", pro: false },
-      { name: "404 Error", path: "/error-404", pro: false }
+      { name: "User Sign In", path: "/user-signin" },
+      { name: "User Sign Up", path: "/user-signup" },
+      { name: "Reset Password", path: "/reset-password" },
     ]
-  }
+  },
+  {
+    name: "관리자 로그인",
+    icon: <PlugInIcon />,
+    subItems: [
+      { name: "Admin Sign In", path: "/admin-signin" },
+      { name: "Admin Sign Up", path: "/admin-signup" },
+      { name: "Reset Password", path: "/reset-password" },
+    ]
+  },
 ]
 
 const othersItems = [
   {
-    icon: <PlugInIcon />,
-    name: "Authentication",
+    icon: <PageIcon />,
+    name: "설정",
     subItems: [
-      { name: "Sign In", path: "/signin", pro: false },
-      { name: "Sign Up", path: "/signup", pro: false }
+      { name: "404 Error", path: "/error-404"},
+      { name: "Success Page", path: "/success"},
     ]
   }
 ]
