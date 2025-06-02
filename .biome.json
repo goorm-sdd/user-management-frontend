@@ -1,0 +1,23 @@
+{
+    "$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
+    "version": "1.4.1",
+    "formatter": {
+        "indentStyle": "space",
+        "indentWidth": 2,
+        "lineWidth": 100,
+        "quoteStyle": "double",
+        "trailingComma": "all",
+        "semicolons": "asNeeded"
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+        "recommended": true,
+        "nursery": true
+        }
+    },
+    "files": {
+        "ignore": ["node_modules", "dist", "coverage", "build"]
+    }
+}
+  
