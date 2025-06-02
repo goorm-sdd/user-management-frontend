@@ -157,4 +157,4 @@ const Header = ({ onClick, onToggle }) => {
   )
 }
 
-export default Header
+export default Header;

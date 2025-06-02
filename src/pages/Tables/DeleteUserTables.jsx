@@ -2,7 +2,7 @@ import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import PageMeta from "../../components/common/PageMeta";
 import DeleteUserTable from "../../components/tables/DataTables/DeleteUserTable";
 
-const DaleteUserTables = () => {
+const DeleteUserTables = () => {
   return (
     <>
       <PageMeta
@@ -16,4 +16,4 @@ const DaleteUserTables = () => {
     </>
   );
 }
-export default DaleteUserTables;
+export default DeleteUserTables;

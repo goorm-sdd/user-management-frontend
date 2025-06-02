@@ -4,19 +4,18 @@ import UserSignUp from "./pages/AuthPages/UserSignUp";
 import NotFound from "./pages/OtherPage/NotFound";
 import Success from "./pages/OtherPage/Success";
 import UserProfiles from "./pages/UserProfiles";
-import DashbordTables from "./pages/Tables/DashbordTables";
-import DaleteUserTables from "./pages/Tables/DaleteUserTables";
+import DashboardTables from "./pages/Tables/DashboardTables";
+import DeleteUserTables from "./pages/Tables/DeleteUserTables";
 import UserTables from "./pages/Tables/UserTables";
 import FormElements from "./pages/Forms/FormElements";
-import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
-import { ScrollToTop } from "./components/common/ScrollToTop";
+import ScrollToTop from "./components/common/ScrollToTop";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ResetPassword from "./pages/AuthPages/ResetPassword";
 import AdminSignIn from "./pages/AuthPages/AdminSignin";
 import AdminSignUp from "./pages/AuthPages/AdminSignUp";
 
-export default function App() {
+const App = () => {
   return (
     <>
       <Router>
@@ -28,15 +27,14 @@ export default function App() {
 
             {/* Others Page */}
             <Route path="/profile" element={<UserProfiles />} />
-            <Route path="/blank" element={<Blank />} />
 
             {/* Forms */}
             <Route path="/form-elements" element={<FormElements />} />
 
             {/* Tables */}
-            <Route path="/dashbord-tables" element={<DashbordTables />} />
+            <Route path="/dashboard-tables" element={<DashboardTables />} />
             <Route path="/user-tables" element={<UserTables />} />
-            <Route path="/delete-user" element={<DaleteUserTables />} />
+            <Route path="/delete-user" element={<DeleteUserTables />} />
 
           </Route>
 
@@ -56,3 +54,4 @@ export default function App() {
     </>
   );
 }
+export default App;
