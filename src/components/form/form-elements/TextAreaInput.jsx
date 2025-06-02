@@ -3,7 +3,7 @@ import ComponentCard from "../../common/ComponentCard";
 import TextArea from "../input/TextArea";
 import Label from "../Label";
 
-export default function TextAreaInput() {
+const TextAreaInput = () => {
   const [message, setMessage] = useState("");
   const [messageTwo, setMessageTwo] = useState("");
   return (
@@ -40,3 +40,4 @@ export default function TextAreaInput() {
     </ComponentCard>
   );
 }
+export default TextAreaInput;

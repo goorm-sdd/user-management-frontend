@@ -2,7 +2,7 @@ import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import PageMeta from "../../components/common/PageMeta";
 import UserDataTable from "../../components/tables/DataTables/UserDataTable";
 
-export default function UserTables() {
+const UserTables = () => {
   return (
     <>
       <PageMeta
@@ -16,3 +16,4 @@ export default function UserTables() {
     </>
   );
 }
+export default UserTables;

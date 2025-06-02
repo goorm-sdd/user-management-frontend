@@ -1,7 +1,7 @@
 import ComponentCard from "../../common/ComponentCard"
 import Switch from "../switch/Switch"
 
-export default function ToggleSwitch() {
+const ToggleSwitch = () => {
   const handleSwitchChange = checked => {
     console.log("Switch is now:", checked ? "ON" : "OFF")
   }
@@ -38,3 +38,4 @@ export default function ToggleSwitch() {
     </ComponentCard>
   )
 }
+export default ToggleSwitch;

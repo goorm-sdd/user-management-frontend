@@ -4,7 +4,7 @@ import Label from "../Label"
 import Select from "../Select"
 import MultiSelect from "../MultiSelect"
 
-export default function SelectInputs() {
+const SelectInputs = () => {
   const options = [
     { value: "marketing", label: "Marketing" },
     { value: "template", label: "Template" },
@@ -49,3 +49,4 @@ export default function SelectInputs() {
     </ComponentCard>
   )
 }
+export default SelectInputs;

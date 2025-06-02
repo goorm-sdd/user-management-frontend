@@ -2,7 +2,8 @@ import { useState } from "react"
 import ComponentCard from "../../common/ComponentCard"
 import Input from "../input/InputField"
 import Label from "../Label"
-export default function InputStates() {
+
+const InputStates = () => {
   const [email, setEmail] = useState("")
   const [emailTwo, setEmailTwo] = useState("")
   const [error, setError] = useState(false)
@@ -72,3 +73,4 @@ export default function InputStates() {
     </ComponentCard>
   )
 }
+export default InputStates;

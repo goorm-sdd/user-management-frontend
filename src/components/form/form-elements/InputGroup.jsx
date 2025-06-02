@@ -4,7 +4,7 @@ import Input from "../input/InputField"
 import { EnvelopeIcon } from "../../../icons"
 import PhoneInput from "../group-input/PhoneInput"
 
-export default function InputGroup() {
+const InputGroup = () => {
   const countries = [
     { code: "US", label: "+1" },
     { code: "GB", label: "+44" },
@@ -52,3 +52,4 @@ export default function InputGroup() {
     </ComponentCard>
   )
 }
+export default InputGroup;

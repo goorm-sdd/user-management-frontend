@@ -6,7 +6,7 @@ import Select from "../Select"
 import { EyeCloseIcon, EyeIcon, TimeIcon } from "../../../icons"
 import DatePicker from "../date-picker.jsx"
 
-export default function DefaultInputs() {
+const DefaultInputs = () => {
   const [showPassword, setShowPassword] = useState(false)
   const options = [
     { value: "marketing", label: "Marketing" },
@@ -113,3 +113,4 @@ export default function DefaultInputs() {
     </ComponentCard>
   )
 }
+export default DefaultInputs;

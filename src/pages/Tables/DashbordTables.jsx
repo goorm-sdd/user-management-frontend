@@ -3,7 +3,7 @@ import ComponentCard from "../../components/common/ComponentCard";
 import PageMeta from "../../components/common/PageMeta";
 import DashboardTable from "../../components/tables/BasicTables/DashboardTable";
 
-export default function DashboardTables() {
+const DashboardTables = () => {
   return (
     <>
       <PageMeta
@@ -19,3 +19,4 @@ export default function DashboardTables() {
     </>
   );
 }
+export default DashboardTables;

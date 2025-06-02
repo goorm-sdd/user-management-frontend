@@ -2,7 +2,7 @@ import ComponentCard from "../../common/ComponentCard"
 import FileInput from "../input/FileInput"
 import Label from "../Label"
 
-export default function FileInputExample() {
+const FileInputExample = () => {
   const handleFileChange = event => {
     const file = event.target.files?.[0]
     if (file) {
@@ -19,3 +19,4 @@ export default function FileInputExample() {
     </ComponentCard>
   )
 }
+export default FileInputExample;

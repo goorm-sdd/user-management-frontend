@@ -1,4 +1,4 @@
-import EcommerceMetrics from "../../components/ecommerce/EcommerceMetrics";
+import UserMetrics from "../../components/User/UserMetrics";
 import PageMeta from "../../components/common/PageMeta";
 import ComponentCard from "../../components/common/ComponentCard";
 import DashboardTable from "../../components/tables/BasicTables/DashboardTable";
@@ -11,7 +11,7 @@ const Dashboard = () => {
         description="This is React.js Ecommerce Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
       />
       <div className="space-y-6">
-        <EcommerceMetrics />
+        <UserMetrics />
       </div>
       <div className="space-y-6 mt-6">
         <ComponentCard title="회원 목록">

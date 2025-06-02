@@ -11,7 +11,7 @@ import TextAreaInput from "../../components/form/form-elements/TextAreaInput";
 import InputStates from "../../components/form/form-elements/InputStates";
 import PageMeta from "../../components/common/PageMeta";
 
-export default function FormElements() {
+const FormElements = () => {
   return (
     <div>
       <PageMeta
@@ -38,3 +38,4 @@ export default function FormElements() {
     </div>
   );
 }
+export default FormElements;

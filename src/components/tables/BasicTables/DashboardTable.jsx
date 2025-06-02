@@ -91,7 +91,7 @@ const tableData = [
   }
 ]
 
-export default function DashboardTable() {
+const DashboardTable = () => {
     const [page, setPage] = useState(1);
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
@@ -185,3 +185,4 @@ export default function DashboardTable() {
     </div>
   )
 }
+export default DashboardTable;

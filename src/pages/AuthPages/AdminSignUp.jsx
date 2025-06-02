@@ -2,7 +2,7 @@ import PageMeta from "../../components/common/PageMeta";
 import AuthLayout from "./AuthPageLayout";
 import SignUpForm from "../../components/auth/SignUpForm";
 
-export default function AdminSignUp() {
+const AdminSignUp = () => {
   return (
     <>
       <PageMeta
@@ -15,3 +15,4 @@ export default function AdminSignUp() {
     </>
   );
 }
+export default AdminSignUp;

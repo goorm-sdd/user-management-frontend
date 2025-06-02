@@ -6,7 +6,7 @@ import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
 
-export default function UserInfoCard() {
+const UserInfoCard = () => {
   const { isOpen, openModal, closeModal } = useModal();
   
   const handleSave = () => {
@@ -185,3 +185,4 @@ export default function UserInfoCard() {
     </div>
   );
 }
+export default UserInfoCard;
