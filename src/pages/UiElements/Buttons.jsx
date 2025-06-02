@@ -4,7 +4,7 @@ import PageMeta from "../../components/common/PageMeta";
 import Button from "../../components/ui/button/Button";
 import { BoxIcon } from "../../icons";
 
-export default function Buttons() {
+const Buttons = () => {
   return (
     <div>
       <PageMeta
@@ -116,3 +116,4 @@ export default function Buttons() {
     </div>
   );
 }
+export default Buttons;

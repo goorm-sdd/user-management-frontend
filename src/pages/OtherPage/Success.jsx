@@ -20,7 +20,7 @@ export default function Success() {
               className="hidden dark:block"
             />
           </div>
-          <h1 class="mb-2 font-bold text-gray-800 text-title-md dark:text-white/90 xl:text-title-2xl">SUCCESS !</h1>
+          <h1 className="mb-2 font-bold text-gray-800 text-title-md dark:text-white/90 xl:text-title-2xl">SUCCESS !</h1>
           <p className="mt-10 mb-6 text-base text-gray-700 dark:text-gray-400 sm:text-lg">
           Awesome! your message has been sent successfully, Our support team will get back to you as soon as possible.
           </p>

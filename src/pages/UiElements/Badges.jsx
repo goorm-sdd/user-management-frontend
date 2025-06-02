@@ -4,7 +4,7 @@ import { PlusIcon } from "../../icons";
 import PageMeta from "../../components/common/PageMeta";
 import ComponentCard from "../../components/common/ComponentCard";
 
-export default function Badges() {
+const Badges = () => {
   return (
     <div>
       <PageMeta
@@ -169,3 +169,4 @@ export default function Badges() {
     </div>
   );
 }
+export default Badges;
