@@ -46,6 +46,14 @@ const FindIDForm = () => {
                     <Button> 인증번호 확인 </Button>
                   </div>
                 </div>
+                <div className="flex justify-end my-3">
+                  <Link
+                    to="/reset-password"
+                    className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                  >
+                    아뇨, 비밀번호가 기억이 안납니다..
+                  </Link>
+                </div>
                 <div>
                   <Button className="w-full" size="sm">
                     Find Email
