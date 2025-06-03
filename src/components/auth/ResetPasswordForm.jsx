@@ -66,10 +66,17 @@ const ResetPasswordForm = () => {
                     <Button disabled={code.trim() === ""}>인증번호 확인</Button>
                   </div>
                 </div>
-
+                <div className="flex justify-end my-3">
+                  <Link
+                    to="/find-id"
+                    className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                  >
+                    아뇨, 이메일이 기억이 안납니다..
+                  </Link>
+                </div>
                 <div>
                   <Button className="w-full" size="sm">
-                    Sign in
+                    Send password
                   </Button>
                 </div>
               </div>
