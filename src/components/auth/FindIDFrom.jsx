@@ -1,9 +1,13 @@
+import { useState } from "react";
 import { Link } from "react-router";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
 
 const FindIDForm = () => {
+  const [phone, setPhone] = useState("");
+  const [code, setCode] = useState("");
+
   return (
     <div className="flex flex-col flex-1">
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
@@ -33,8 +37,12 @@ const FindIDForm = () => {
                     <Input
                       className="flex-grow mr-35"
                       placeholder="010-0000-0000"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
                     />
-                    <Button> 인증번호 발송 </Button>
+                    <Button disabled={phone.trim() === ""}>
+                      인증번호 발송
+                    </Button>
                   </div>
                 </div>
                 <div>
@@ -42,8 +50,13 @@ const FindIDForm = () => {
                     인증번호 <span className="text-error-500">*</span>{" "}
                   </Label>
                   <div className="flex items-center justify-between">
-                    <Input className="flex-grow mr-35" placeholder="000000" />
-                    <Button> 인증번호 확인 </Button>
+                    <Input
+                      className="flex-grow mr-35"
+                      placeholder="000000"
+                      value={code}
+                      onChange={(e) => setCode(e.target.value)}
+                    />
+                    <Button disabled={code.trim() === ""}>인증번호 확인</Button>
                   </div>
                 </div>
                 <div className="flex justify-end my-3">
