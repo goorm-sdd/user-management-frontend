@@ -1,14 +1,25 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
 
-const SignInForm = () => {
+const SignInForm = ({ role = "user" }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSuccess = (e) => {
+    e.preventDefault();
+    if (role === "admin") {
+      navigate("/");
+    } else {
+      navigate("/login-success");
+    }
+  };
+
   return (
     <div className="flex flex-col flex-1">
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
@@ -22,7 +33,7 @@ const SignInForm = () => {
             </p>
           </div>
           <div>
-            <form>
+            <form onSubmit={handleSuccess}>
               <div className="space-y-6">
                 <div>
                   <Label>
@@ -66,7 +77,7 @@ const SignInForm = () => {
                   </Link>
                 </div>
                 <div>
-                  <Button className="w-full" size="sm">
+                  <Button className="w-full" size="sm" type="submit">
                     Sign in
                   </Button>
                 </div>
