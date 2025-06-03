@@ -12,7 +12,7 @@ const SignUpForm = () => {
   const [verificationCode, setVerificationCode] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   return (
-    <div className="flex flex-col flex-1 w-full overflow-y-auto lg:w-1/2 no-scrollbar bg-white">
+    <div className="flex flex-col flex-1 w-full overflow-y-auto lg:w-1/2 no-scrollbar">
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <div className="mb-5 sm:mb-8">
