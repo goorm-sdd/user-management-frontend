@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
@@ -7,6 +7,12 @@ import Button from "../ui/button/Button";
 const FindIDForm = () => {
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/found-email");
+  };
 
   return (
     <div className="flex flex-col flex-1">
@@ -21,7 +27,7 @@ const FindIDForm = () => {
             </p>
           </div>
           <div>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="space-y-6">
                 <div>
                   <Label>
@@ -68,23 +74,23 @@ const FindIDForm = () => {
                   </Link>
                 </div>
                 <div>
-                  <Button className="w-full" size="sm">
-                    Find Email
+                  <Button className="w-full" size="sm" type="submit">
+                    Find email
                   </Button>
                 </div>
               </div>
             </form>
 
-            <div className="mt-5">
+            <div className="flex items-center gap-2 mt-5 ">
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                잠깐, 이메일이 기억난 거 같아요 {""}
-                <Link
-                  to="/user-signin"
-                  className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
-                >
-                  로그인하기
-                </Link>
+                잠깐, 이메일이 기억난 거 같아요
               </p>
+              <Link
+                to="/user-signin"
+                className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+              >
+                로그인하기
+              </Link>
             </div>
           </div>
         </div>
