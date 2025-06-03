@@ -1,43 +1,43 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react";
 
-import { Link } from "react-router"
-import { useSidebar } from "../context/SidebarContext"
-import ThemeToggleButton from "../components/common/ThemeToggleButton"
-import UserDropdown from "../components/header/UserDropdown"
+import { Link } from "react-router-dom";
+import { useSidebar } from "../context/SidebarContext";
+import ThemeToggleButton from "../components/common/ThemeToggleButton";
+import UserDropdown from "../components/header/UserDropdown";
 
 const AppHeader = () => {
-  const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false)
+  const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
-  const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar()
+  const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
 
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
-      toggleSidebar()
+      toggleSidebar();
     } else {
-      toggleMobileSidebar()
+      toggleMobileSidebar();
     }
-  }
+  };
 
   const toggleApplicationMenu = () => {
-    setApplicationMenuOpen(!isApplicationMenuOpen)
-  }
+    setApplicationMenuOpen(!isApplicationMenuOpen);
+  };
 
-  const inputRef = useRef(null)
+  const inputRef = useRef(null);
 
   useEffect(() => {
-    const handleKeyDown = event => {
+    const handleKeyDown = (event) => {
       if ((event.metaKey || event.ctrlKey) && event.key === "k") {
-        event.preventDefault()
-        inputRef.current?.focus()
+        event.preventDefault();
+        inputRef.current?.focus();
       }
-    }
+    };
 
-    document.addEventListener("keydown", handleKeyDown)
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown)
-    }
-  }, [])
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 flex w-full bg-white border-gray-200 z-99999 dark:border-gray-800 dark:bg-gray-900 lg:border-b">
@@ -165,7 +165,7 @@ const AppHeader = () => {
         </div>
       </div>
     </header>
-  )
-}
+  );
+};
 
 export default AppHeader;
