@@ -1,5 +1,5 @@
 import GridShape from "../../components/common/GridShape";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import PageMeta from "../../components/common/PageMeta";
 
 export default function Success() {
@@ -13,16 +13,23 @@ export default function Success() {
         <GridShape />
         <div className="mx-auto w-full max-w-[274px] text-center sm:max-w-[555px]">
           <div className="mx-auto mb-10 w-full max-w-[100px] text-center sm:max-w-[160px]">
-            <img src="/images/error/success.svg" alt="success" className="dark:hidden" />
+            <img
+              src="/images/error/success.svg"
+              alt="success"
+              className="dark:hidden"
+            />
             <img
               src="/images/error/success-dark.svg"
               alt="success"
               className="hidden dark:block"
             />
           </div>
-          <h1 className="mb-2 font-bold text-gray-800 text-title-md dark:text-white/90 xl:text-title-2xl">SUCCESS !</h1>
+          <h1 className="mb-2 font-bold text-gray-800 text-title-md dark:text-white/90 xl:text-title-2xl">
+            SUCCESS !
+          </h1>
           <p className="mt-10 mb-6 text-base text-gray-700 dark:text-gray-400 sm:text-lg">
-          Awesome! your message has been sent successfully, Our support team will get back to you as soon as possible.
+            Awesome! your message has been sent successfully, Our support team
+            will get back to you as soon as possible.
           </p>
 
           <Link

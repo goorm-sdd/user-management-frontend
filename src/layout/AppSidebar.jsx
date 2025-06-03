@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from "react"
-import { Link, useLocation } from "react-router"
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 // Assume these icons are imported from an icon library
 import {
@@ -20,32 +20,32 @@ const navItems = [
   {
     icon: <GridIcon />,
     name: "대시보드",
-    path: "/"
+    path: "/",
   },
   {
     icon: <UserCircleIcon />,
     name: "내 정보",
-    path: "/profile"
+    path: "/profile",
   },
   {
     icon: <UserCircleIcon />,
     name: "회원 상세 정보",
-    path: "/user-detail"
+    path: "/user-detail",
   },
   {
     icon: <TableIcon />,
     name: "전체 회원",
-    path: "/user-tables" 
+    path: "/user-tables",
   },
   {
     name: "탈퇴 회원",
     icon: <ListIcon />,
-    path: "/delete-user"
+    path: "/delete-user",
   },
   {
     name: "미인증 회원",
     icon: <FileIcon />,
-    path: "/not-certified-user"
+    path: "/not-certified-user",
   },
   {
     name: "회원 가입",
@@ -65,39 +65,39 @@ const navItems = [
       { name: "Reset Password", path: "/reset-password" },
     ]
   },
-]
+];
 
 const othersItems = [
   {
     icon: <PageIcon />,
     name: "설정",
     subItems: [
-      { name: "404 Error", path: "/error-404"},
-      { name: "Success Page", path: "/success"},
+      { name: "404 Error", path: "/error-404" },
+      { name: "Success Page", path: "/success" },
     ]
   }
-]
+];
 
 const AppSidebar = () => {
-  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar()
-  const location = useLocation()
+  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  const location = useLocation();
 
-  const [openSubmenu, setOpenSubmenu] = useState(null)
-  const [subMenuHeight, setSubMenuHeight] = useState({})
-  const subMenuRefs = useRef({})
+  const [openSubmenu, setOpenSubmenu] = useState(null);
+  const [subMenuHeight, setSubMenuHeight] = useState({});
+  const subMenuRefs = useRef({});
 
   // const isActive = (path: string) => location.pathname === path;
-  const isActive = useCallback(path => location.pathname === path, [
-    location.pathname
-  ])
+  const isActive = useCallback(path => location.pathname === path,
+    [location.pathname]
+  )
 
   useEffect(() => {
-    let submenuMatched = false
-    ;["main", "others"].forEach(menuType => {
-      const items = menuType === "main" ? navItems : othersItems
+    let submenuMatched = false;
+    ["main", "others"].forEach(menuType => {
+      const items = menuType === "main" ? navItems : othersItems;
       items.forEach((nav, index) => {
         if (nav.subItems) {
-          nav.subItems.forEach(subItem => {
+          nav.subItems.forEach((subItem) => {
             if (isActive(subItem.path)) {
               setOpenSubmenu({
                 type: menuType,
@@ -111,34 +111,34 @@ const AppSidebar = () => {
     })
 
     if (!submenuMatched) {
-      setOpenSubmenu(null)
+      setOpenSubmenu(null);
     }
-  }, [location, isActive])
+  }, [location, isActive]);
 
   useEffect(() => {
     if (openSubmenu !== null) {
-      const key = `${openSubmenu.type}-${openSubmenu.index}`
+      const key = `${openSubmenu.type}-${openSubmenu.index}`;
       if (subMenuRefs.current[key]) {
         setSubMenuHeight(prevHeights => ({
           ...prevHeights,
-          [key]: subMenuRefs.current[key]?.scrollHeight || 0
+          [key]: subMenuRefs.current[key]?.scrollHeight || 0,
         }))
       }
     }
-  }, [openSubmenu])
+  }, [openSubmenu]);
 
   const handleSubmenuToggle = (index, menuType) => {
-    setOpenSubmenu(prevOpenSubmenu => {
+    setOpenSubmenu((prevOpenSubmenu) => {
       if (
         prevOpenSubmenu &&
         prevOpenSubmenu.type === menuType &&
         prevOpenSubmenu.index === index
       ) {
-        return null
+        return null;
       }
       return { type: menuType, index }
-    })
-  }
+    });
+  };
 
   const renderMenuItems = (items, menuType) => (
     <ul className="flex flex-col gap-4">
@@ -205,19 +205,19 @@ const AppSidebar = () => {
           )}
           {nav.subItems && (isExpanded || isHovered || isMobileOpen) && (
             <div
-              ref={el => {
-                subMenuRefs.current[`${menuType}-${index}`] = el
+              ref={(el) => {
+                subMenuRefs.current[`${menuType}-${index}`] = el;
               }}
               className="overflow-hidden transition-all duration-300"
               style={{
                 height:
                   openSubmenu?.type === menuType && openSubmenu?.index === index
                     ? `${subMenuHeight[`${menuType}-${index}`]}px`
-                    : "0px"
+                    : "0px",
               }}
             >
               <ul className="mt-2 space-y-1 ml-9">
-                {nav.subItems.map(subItem => (
+                {nav.subItems.map((subItem) => (
                   <li key={subItem.name}>
                     <Link
                       to={subItem.path}
@@ -261,7 +261,7 @@ const AppSidebar = () => {
         </li>
       ))}
     </ul>
-  )
+  );
 
   return (
     <aside
@@ -348,7 +348,7 @@ const AppSidebar = () => {
         </nav>
       </div>
     </aside>
-  )
-}
+  );
+};
 
-export default AppSidebar
+export default AppSidebar;

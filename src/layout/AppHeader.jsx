@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
-import { Link } from "react-router"
+import { Link } from "react-router-dom";
 import { useSidebar } from "../context/SidebarContext"
 import ThemeToggleButton from "../components/common/ThemeToggleButton"
 import AppDropdown from "../components/header/AppDropdown"
@@ -25,17 +25,17 @@ const AppHeader = () => {
   const inputRef = useRef(null)
 
   useEffect(() => {
-    const handleKeyDown = event => {
+    const handleKeyDown = (event) => {
       if ((event.metaKey || event.ctrlKey) && event.key === "k") {
-        event.preventDefault()
-        inputRef.current?.focus()
+        event.preventDefault();
+        inputRef.current?.focus();
       }
     }
 
-    document.addEventListener("keydown", handleKeyDown)
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown)
+      document.removeEventListener("keydown", handleKeyDown);
     }
   }, [])
 
