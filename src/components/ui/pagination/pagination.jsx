@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '../button/Button';
 
 const Pagination = ({
   currentPage,
@@ -49,7 +50,7 @@ const Pagination = ({
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
   return (
-    <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+    <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6 dark:border-white/[0.05]">
       {/* Mobile navigation */}
       <div className="flex flex-1 justify-between sm:hidden">
         <button
@@ -71,7 +72,7 @@ const Pagination = ({
       {/* Desktop navigation */}
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
-          <p className="text-sm text-gray-700">
+          <p className="text-gray-700 text-theme-sm dark:text-white/90">
             Showing <span className="font-medium">{startItem}</span> to{' '}
             <span className="font-medium">{endItem}</span> of{' '}
             <span className="font-medium">{totalItems}</span> results
@@ -79,13 +80,11 @@ const Pagination = ({
         </div>
         <div>
           <nav
-            className="isolate inline-flex -space-x-px rounded-md shadow-xs"
-            aria-label="Pagination"
-          >
+            className="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
             <button
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 disabled:opacity-50"
+              className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 dark:border-white/[0.05] disabled:opacity-50"
             >
               <span className="sr-only">Previous</span>
               <svg className="size-5" viewBox="0 0 20 20" fill="currentColor">
@@ -102,7 +101,7 @@ const Pagination = ({
                 key={index}
                 onClick={() => handleClick(page)}
                 disabled={page === '...'}
-                className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
+                className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-gray-300 ring-inset dark:text-white/90 dark:border-white/[0.05] focus:z-20 focus:outline-offset-0 ${
                   page === currentPage
                     ? 'z-10 bg-indigo-600 text-white'
                     : 'text-gray-900'
@@ -115,7 +114,7 @@ const Pagination = ({
             <button
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 disabled:opacity-50"
+              className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset dark:border-white/[0.05] hover:bg-gray-50 disabled:opacity-50"
             >
               <span className="sr-only">Next</span>
               <svg className="size-5" viewBox="0 0 20 20" fill="currentColor">
