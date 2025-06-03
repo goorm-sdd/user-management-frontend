@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router";
 import UserSignIn from "./pages/AuthPages/UserSignIn";
 import UserSignUp from "./pages/AuthPages/UserSignUp";
 import NotFound from "./pages/OtherPage/NotFound";
+import ErrorServer from "./pages/OtherPage/ErrorServer";
 import Success from "./pages/OtherPage/Success";
 import UserProfiles from "./pages/UserProfiles";
 import DashboardTables from "./pages/Tables/DashboardTables";
@@ -50,6 +51,7 @@ const App = () => {
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
           <Route path="/success" element={<Success />} />
+          <Route path="/error-server" element={<ErrorServer />} />
         </Routes>
       </Router>
     </>
