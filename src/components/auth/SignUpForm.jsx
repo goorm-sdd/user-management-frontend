@@ -123,7 +123,7 @@ const SignUpForm = () => {
                         value={verificationCode}
                         onChange={(e) => setVerificationCode(e.target.value)}
                       />
-                    <Button disabled={phone.trim() === ""}>인증번호 확인</Button>
+                    <Button disabled={verificationCode.trim() === ""}>인증번호 확인</Button>
                   </div>
                 </div>
                 {/* <!-- Checkbox --> */}
