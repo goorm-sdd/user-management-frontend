@@ -11,6 +11,7 @@ import {
   PlugInIcon,
   TableIcon,
   BoltIcon,
+  FileIcon,
   UserCircleIcon
 } from "../icons"
 import { useSidebar } from "../context/SidebarContext"
@@ -35,6 +36,11 @@ const navItems = [
     name: "탈퇴 회원",
     icon: <ListIcon />,
     path: "/delete-user"
+  },
+  {
+    name: "미인증 회원",
+    icon: <FileIcon />,
+    path: "/not-certified-user"
   },
   {
     name: "회원 가입",

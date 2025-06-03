@@ -7,6 +7,7 @@ import Success from "./pages/OtherPage/Success";
 import UserProfiles from "./pages/UserProfiles";
 import DashboardTables from "./pages/Tables/DashboardTables";
 import DeleteUserTables from "./pages/Tables/DeleteUserTables";
+import NotCertifiedUserTables from "./pages/Tables/NotCertifiedUserTables";
 import UserTables from "./pages/Tables/UserTables";
 import FormElements from "./pages/Forms/FormElements";
 import AppLayout from "./layout/AppLayout";
@@ -37,6 +38,7 @@ const App = () => {
             <Route path="/dashboard-tables" element={<DashboardTables />} />
             <Route path="/user-tables" element={<UserTables />} />
             <Route path="/delete-user" element={<DeleteUserTables />} />
+            <Route path="/not-certified-user" element={<NotCertifiedUserTables />} />
           </Route>
 
           {/* Auth Layout */}
