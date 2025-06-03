@@ -75,16 +75,16 @@ const FindIDForm = () => {
               </div>
             </form>
 
-            <div className="mt-5">
+            <div className="flex items-center gap-2 mt-5 ">
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                잠깐, 이메일이 기억난 거 같아요 {""}
-                <Link
-                  to="/user-signin"
-                  className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
-                >
-                  로그인하기
-                </Link>
+                잠깐, 이메일이 기억난 거 같아요
               </p>
+              <Link
+                to="/user-signin"
+                className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+              >
+                로그인하기
+              </Link>
             </div>
           </div>
         </div>
