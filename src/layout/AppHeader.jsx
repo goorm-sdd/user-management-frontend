@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
 import { Link } from "react-router-dom";
-import { useSidebar } from "../context/SidebarContext";
-import ThemeToggleButton from "../components/common/ThemeToggleButton";
-import UserDropdown from "../components/header/UserDropdown";
+import { useSidebar } from "../context/SidebarContext"
+import ThemeToggleButton from "../components/common/ThemeToggleButton"
+import AppDropdown from "../components/header/AppDropdown"
 
 const AppHeader = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -84,7 +84,7 @@ const AppHeader = () => {
 
           <Link to="/" className="lg:hidden">
             <img
-              className="dark:hidden"
+              className="dark:hidden" width="200"
               src="./images/logo/logo.svg"
               alt="Logo"
             />
@@ -161,7 +161,7 @@ const AppHeader = () => {
             {/* <!-- Dark Mode Toggler --> */}
           </div>
           {/* <!-- User Area --> */}
-          <UserDropdown />
+          <AppDropdown />
         </div>
       </div>
     </header>

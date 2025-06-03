@@ -1,23 +1,18 @@
 import PageBreadcrumb from "../components/common/PageBreadCrumb";
-import UserMetaCard from "../components/UserProfile/UserMetaCard";
 import UserInfoCard from "../components/UserProfile/UserInfoCard";
-import UserAddressCard from "../components/UserProfile/UserAddressCard";
-import PageMeta from "../components/common/PageMeta";
 
 const UserProfiles = () => {
   return (
-    <>
-      <PageMeta
-        title="React.js Profile Dashboard | TailAdmin - Next.js Admin Dashboard Template"
-        description="This is React.js Profile Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
-      />
-      <PageBreadcrumb pageTitle="회원 정보" />
-        <div className="space-y-6">
-          <UserMetaCard />
-          <UserInfoCard />
-          <UserAddressCard />
+    <div className="lg:flex lg:items-center mx-auto">
+      <div className="min-w-0 flex-1 lg:p-6 ">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90" x-text="pageName">내 정보</h2>
         </div>
-    </>
+        <div className="space-y-6">
+          <UserInfoCard />
+        </div>
+      </div>
+    </div>
   );
 }
 export default UserProfiles;
