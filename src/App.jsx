@@ -4,6 +4,7 @@ import UserSignUp from "./pages/AuthPages/UserSignUp";
 import NotFound from "./pages/OtherPage/NotFound";
 import ErrorServer from "./pages/OtherPage/ErrorServer";
 import Success from "./pages/OtherPage/Success";
+import LoginSuccess from "./pages/AuthPages/LoginSuccess";
 import UserProfiles from "./pages/UserProfiles";
 import DashboardTables from "./pages/Tables/DashboardTables";
 import DeleteUserTables from "./pages/Tables/DeleteUserTables";
@@ -47,6 +48,7 @@ const App = () => {
 
           <Route path="/user-signin" element={<UserSignIn />} />
           <Route path="/user-signup" element={<UserSignUp />} />
+          <Route path="/login-success" element={<LoginSuccess />} />
           <Route path="/find-id" element={<FindID />} />
           <Route path="/found-email" element={<FoundEmail />} />
           <Route path="/reset-password" element={<ResetPassword />} />
