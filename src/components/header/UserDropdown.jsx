@@ -109,5 +109,5 @@ const UserDropdown = () => {
       </Dropdown>
     </div>
   );
-}
+};
 export default UserDropdown;

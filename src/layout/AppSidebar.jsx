@@ -12,9 +12,9 @@ import {
   TableIcon,
   BoltIcon,
   FileIcon,
-  UserCircleIcon
-} from "../icons"
-import { useSidebar } from "../context/SidebarContext"
+  UserCircleIcon,
+} from "../icons";
+import { useSidebar } from "../context/SidebarContext";
 
 const navItems = [
   {
@@ -54,7 +54,7 @@ const navItems = [
       { name: "User Sign In", path: "/user-signin" },
       { name: "User Sign Up", path: "/user-signup" },
       { name: "Reset Password", path: "/reset-password" },
-    ]
+    ],
   },
   {
     name: "관리자 로그인",
@@ -63,7 +63,7 @@ const navItems = [
       { name: "Admin Sign In", path: "/admin-signin" },
       { name: "Admin Sign Up", path: "/admin-signup" },
       { name: "Reset Password", path: "/reset-password" },
-    ]
+    ],
   },
 ];
 
@@ -74,8 +74,8 @@ const othersItems = [
     subItems: [
       { name: "404 Error", path: "/error-404" },
       { name: "Success Page", path: "/success" },
-    ]
-  }
+    ],
+  },
 ];
 
 const AppSidebar = () => {
@@ -87,13 +87,14 @@ const AppSidebar = () => {
   const subMenuRefs = useRef({});
 
   // const isActive = (path: string) => location.pathname === path;
-  const isActive = useCallback(path => location.pathname === path,
+  const isActive = useCallback(
+    (path) => location.pathname === path,
     [location.pathname]
-  )
+  );
 
   useEffect(() => {
     let submenuMatched = false;
-    ["main", "others"].forEach(menuType => {
+    ["main", "others"].forEach((menuType) => {
       const items = menuType === "main" ? navItems : othersItems;
       items.forEach((nav, index) => {
         if (nav.subItems) {
@@ -101,14 +102,14 @@ const AppSidebar = () => {
             if (isActive(subItem.path)) {
               setOpenSubmenu({
                 type: menuType,
-                index
-              })
-              submenuMatched = true
+                index,
+              });
+              submenuMatched = true;
             }
-          })
+          });
         }
-      })
-    })
+      });
+    });
 
     if (!submenuMatched) {
       setOpenSubmenu(null);
@@ -119,10 +120,10 @@ const AppSidebar = () => {
     if (openSubmenu !== null) {
       const key = `${openSubmenu.type}-${openSubmenu.index}`;
       if (subMenuRefs.current[key]) {
-        setSubMenuHeight(prevHeights => ({
+        setSubMenuHeight((prevHeights) => ({
           ...prevHeights,
           [key]: subMenuRefs.current[key]?.scrollHeight || 0,
-        }))
+        }));
       }
     }
   }, [openSubmenu]);
@@ -136,7 +137,7 @@ const AppSidebar = () => {
       ) {
         return null;
       }
-      return { type: menuType, index }
+      return { type: menuType, index };
     });
   };
 

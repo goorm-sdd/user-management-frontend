@@ -43,7 +43,10 @@ const App = () => {
             <Route path="/dashboard-tables" element={<DashboardTables />} />
             <Route path="/user-tables" element={<UserTables />} />
             <Route path="/delete-user" element={<DeleteUserTables />} />
-            <Route path="/not-certified-user" element={<NotCertifiedUserTables />} />
+            <Route
+              path="/not-certified-user"
+              element={<NotCertifiedUserTables />}
+            />
           </Route>
 
           {/* Auth Layout */}

@@ -1,7 +1,7 @@
-import React from "react"
-import GridShape from "../../components/common/GridShape"
-import { Link } from "react-router-dom"
-import ThemeTogglerTwo from "../../components/common/ThemeTogglerTwo"
+import React from "react";
+import GridShape from "../../components/common/GridShape";
+import { Link } from "react-router-dom";
+import ThemeTogglerTwo from "../../components/common/ThemeTogglerTwo";
 
 const AuthLayout = ({ children }) => {
   return (
@@ -32,6 +32,6 @@ const AuthLayout = ({ children }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 export default AuthLayout;

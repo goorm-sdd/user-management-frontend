@@ -41,5 +41,5 @@ const ErrorServer = () => {
       </div>
     </>
   );
-}
+};
 export default ErrorServer;
