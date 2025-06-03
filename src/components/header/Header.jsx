@@ -1,14 +1,14 @@
-import { useState } from "react"
-import { ThemeToggleButton } from "../common/ThemeToggleButton"
-import UserDropdown from "./UserDropdown"
-import { Link } from "react-router-dom"
+import { useState } from "react";
+import { ThemeToggleButton } from "../common/ThemeToggleButton";
+import UserDropdown from "./UserDropdown";
+import { Link } from "react-router-dom";
 
 const Header = ({ onClick, onToggle }) => {
-  const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false)
+  const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
   const toggleApplicationMenu = () => {
-    setApplicationMenuOpen(!isApplicationMenuOpen)
-  }
+    setApplicationMenuOpen(!isApplicationMenuOpen);
+  };
 
   return (
     <header className="sticky top-0 flex w-full bg-white border-gray-200 z-99999 dark:border-gray-800 dark:bg-gray-900 lg:border-b">
@@ -154,7 +154,7 @@ const Header = ({ onClick, onToggle }) => {
         </div>
       </div>
     </header>
-  )
-}
+  );
+};
 
 export default Header;
