@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { useNavigate, Link } from "react-router";
+
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
@@ -7,6 +8,13 @@ import Button from "../ui/button/Button";
 const ResetPasswordForm = () => {
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
+  const navigate = useNavigate();
+
+  const handleSendPassword = (e) => {
+    e.preventDefault();
+    //여기 서버 요청 추가 예정이에용
+    navigate("/password-sent");
+  };
 
   return (
     <div className="flex flex-col flex-1">
@@ -22,7 +30,7 @@ const ResetPasswordForm = () => {
             </p>
           </div>
           <div>
-            <form>
+            <form onSubmit={handleSendPassword}>
               <div className="space-y-6">
                 <div>
                   <Label>
@@ -75,7 +83,7 @@ const ResetPasswordForm = () => {
                   </Link>
                 </div>
                 <div>
-                  <Button className="w-full" size="sm">
+                  <Button className="w-full" size="sm" type="submit">
                     Send password
                   </Button>
                 </div>

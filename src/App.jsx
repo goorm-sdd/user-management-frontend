@@ -12,10 +12,11 @@ import FormElements from "./pages/Forms/FormElements";
 import AppLayout from "./layout/AppLayout";
 import ScrollToTop from "./components/common/ScrollToTop";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import FindID from "./pages/AuthPages/FindId";
 import ResetPassword from "./pages/AuthPages/ResetPassword";
+import PasswordSent from "./pages/AuthPages/PasswordSent";
 import AdminSignIn from "./pages/AuthPages/AdminSignin";
 import AdminSignUp from "./pages/AuthPages/AdminSignUp";
-import FindID from "./pages/AuthPages/FindId";
 
 const App = () => {
   return (
@@ -47,6 +48,7 @@ const App = () => {
           <Route path="/user-signup" element={<UserSignUp />} />
           <Route path="/find-id" element={<FindID />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/password-sent" element={<PasswordSent />} />
 
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
