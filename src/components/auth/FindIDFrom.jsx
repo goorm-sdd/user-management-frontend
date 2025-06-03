@@ -69,7 +69,7 @@ const FindIDForm = () => {
                 </div>
                 <div>
                   <Button className="w-full" size="sm">
-                    Find Email
+                    Find email
                   </Button>
                 </div>
               </div>
