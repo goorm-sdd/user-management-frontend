@@ -1,14 +1,15 @@
 import { useState } from "react";
+import { Pencil } from "lucide-react";
 import {
   Table,
   TableBody,
   TableCell,
   TableHeader,
-  TableRow
-} from "../../ui/table"
+  TableRow,
+} from "../../ui/table";
 
-import Badge from "../../ui/badge/Badge"
-import Pagination from "../../ui/pagination/pagination"
+import Badge from "../../ui/badge/Badge";
+import Pagination from "../../ui/pagination/pagination";
 
 // Define the table data using the interface
 const tableData = [
@@ -16,83 +17,83 @@ const tableData = [
     id: 1,
     user: {
       name: "Lindsey Curtis",
-      role: "Web Designer"
+      role: "Web Designer",
     },
     projectName: "Agency Website",
     team: {
       images: [
         "/images/user/user-22.jpg",
         "/images/user/user-23.jpg",
-        "/images/user/user-24.jpg"
-      ]
+        "/images/user/user-24.jpg",
+      ],
     },
     budget: "3.9K",
-    status: "Active"
+    status: "Active",
   },
   {
     id: 2,
     user: {
       name: "Kaiya George",
-      role: "Project Manager"
+      role: "Project Manager",
     },
     projectName: "Technology",
     team: {
-      images: ["/images/user/user-25.jpg", "/images/user/user-26.jpg"]
+      images: ["/images/user/user-25.jpg", "/images/user/user-26.jpg"],
     },
     budget: "24.9K",
-    status: "Pending"
+    status: "Pending",
   },
   {
     id: 3,
     user: {
       name: "Zain Geidt",
-      role: "Content Writing"
+      role: "Content Writing",
     },
     projectName: "Blog Writing",
     team: {
-      images: ["/images/user/user-27.jpg"]
+      images: ["/images/user/user-27.jpg"],
     },
     budget: "12.7K",
-    status: "Active"
+    status: "Active",
   },
   {
     id: 4,
     user: {
       name: "Abram Schleifer",
-      role: "Digital Marketer"
+      role: "Digital Marketer",
     },
     projectName: "Social Media",
     team: {
       images: [
         "/images/user/user-28.jpg",
         "/images/user/user-29.jpg",
-        "/images/user/user-30.jpg"
-      ]
+        "/images/user/user-30.jpg",
+      ],
     },
     budget: "2.8K",
-    status: "Cancel"
+    status: "Cancel",
   },
   {
     id: 5,
     user: {
       name: "Carla George",
-      role: "Front-end Developer"
+      role: "Front-end Developer",
     },
     projectName: "Website",
     team: {
       images: [
         "/images/user/user-31.jpg",
         "/images/user/user-32.jpg",
-        "/images/user/user-33.jpg"
-      ]
+        "/images/user/user-33.jpg",
+      ],
     },
     budget: "4.5K",
-    status: "Active"
-  }
-]
+    status: "Active",
+  },
+];
 
 const DashboardTable = () => {
-    const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1);
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="max-w-full overflow-x-auto">
@@ -102,42 +103,48 @@ const DashboardTable = () => {
             <TableRow>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
                 User
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
                 Project Name
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
                 Team
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
                 Status
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
                 Budget
+              </TableCell>
+              <TableCell
+                isHeader
+                className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+              >
+                Edit
               </TableCell>
             </TableRow>
           </TableHeader>
 
           {/* Table Body */}
           <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-            {tableData.map(order => (
+            {tableData.map((order) => (
               <TableRow key={order.id}>
-                <TableCell className="px-5 py-4 sm:px-6 text-start">
+                <TableCell className="px-4 py-4 sm:px-6 text-start">
                   <div className="flex items-center gap-3">
                     <div>
                       <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
@@ -152,8 +159,7 @@ const DashboardTable = () => {
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   {order.projectName}
                 </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                </TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400"></TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   <Badge
                     size="sm"
@@ -171,18 +177,26 @@ const DashboardTable = () => {
                 <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                   {order.budget}
                 </TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                  <button
+                    onClick={() => console.log(`Edit item ${order.id}`)}
+                    className="hover:text-blue-500 transition-colors duration-200"
+                  >
+                    <Pencil size={16} />
+                  </button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-          <Pagination
-            currentPage={page}
-            totalItems={97}
-            itemsPerPage={10}
-            onPageChange={(newPage) => setPage(newPage)}
-          />
+        <Pagination
+          currentPage={page}
+          totalItems={97}
+          itemsPerPage={10}
+          onPageChange={(newPage) => setPage(newPage)}
+        />
       </div>
     </div>
-  )
-}
+  );
+};
 export default DashboardTable;

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserSignIn from "./pages/AuthPages/UserSignIn";
 import UserSignUp from "./pages/AuthPages/UserSignUp";
 import NotFound from "./pages/OtherPage/NotFound";
@@ -41,7 +41,10 @@ const App = () => {
             <Route path="/dashboard-tables" element={<DashboardTables />} />
             <Route path="/user-tables" element={<UserTables />} />
             <Route path="/delete-user" element={<DeleteUserTables />} />
-            <Route path="/not-certified-user" element={<NotCertifiedUserTables />} />
+            <Route
+              path="/not-certified-user"
+              element={<NotCertifiedUserTables />}
+            />
           </Route>
 
           {/* Auth Layout */}
