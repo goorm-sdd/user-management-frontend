@@ -24,8 +24,13 @@ const navItems = [
   },
   {
     icon: <UserCircleIcon />,
-    name: "회원 정보",
+    name: "내 정보",
     path: "/profile"
+  },
+  {
+    icon: <UserCircleIcon />,
+    name: "회원 상세 정보",
+    path: "/user-detail"
   },
   {
     icon: <TableIcon />,
@@ -285,15 +290,13 @@ const AppSidebar = () => {
                 className="dark:hidden"
                 src="/images/logo/logo.svg"
                 alt="Logo"
-                width={150}
-                height={40}
+                width={200}
               />
               <img
                 className="hidden dark:block"
                 src="/images/logo/logo-dark.svg"
                 alt="Logo"
-                width={150}
-                height={40}
+                width={200}
               />
             </>
           ) : (

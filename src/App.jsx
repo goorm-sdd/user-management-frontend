@@ -5,6 +5,7 @@ import NotFound from "./pages/OtherPage/NotFound";
 import ErrorServer from "./pages/OtherPage/ErrorServer";
 import Success from "./pages/OtherPage/Success";
 import LoginSuccess from "./pages/AuthPages/LoginSuccess";
+import UserDetails from "./pages/UserDetails";
 import UserProfiles from "./pages/UserProfiles";
 import DashboardTables from "./pages/Tables/DashboardTables";
 import DeleteUserTables from "./pages/Tables/DeleteUserTables";
@@ -12,6 +13,7 @@ import NotCertifiedUserTables from "./pages/Tables/NotCertifiedUserTables";
 import UserTables from "./pages/Tables/UserTables";
 import FormElements from "./pages/Forms/FormElements";
 import AppLayout from "./layout/AppLayout";
+import UserLayout from "./layout/UserLayout";
 import ScrollToTop from "./components/common/ScrollToTop";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import FindID from "./pages/AuthPages/FindId";
@@ -32,7 +34,7 @@ const App = () => {
             <Route index path="/" element={<Dashboard />} />
 
             {/* Others Page */}
-            <Route path="/profile" element={<UserProfiles />} />
+            <Route path="/user-detail" element={<UserDetails />} />
 
             {/* Forms */}
             <Route path="/form-elements" element={<FormElements />} />
@@ -56,6 +58,10 @@ const App = () => {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/password-sent" element={<PasswordSent />} />
 
+          {/* other Layout */}
+          <Route element={<UserLayout />}>
+            <Route path="/profile" element={<UserProfiles />} />
+          </Route>
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
           <Route path="/success" element={<Success />} />
