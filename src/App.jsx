@@ -14,6 +14,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import ResetPassword from "./pages/AuthPages/ResetPassword";
 import AdminSignIn from "./pages/AuthPages/AdminSignin";
 import AdminSignUp from "./pages/AuthPages/AdminSignUp";
+import FindID from "./pages/AuthPages/FindId";
 
 const App = () => {
   return (
@@ -35,7 +36,6 @@ const App = () => {
             <Route path="/dashboard-tables" element={<DashboardTables />} />
             <Route path="/user-tables" element={<UserTables />} />
             <Route path="/delete-user" element={<DeleteUserTables />} />
-
           </Route>
 
           {/* Auth Layout */}
@@ -44,6 +44,7 @@ const App = () => {
 
           <Route path="/user-signin" element={<UserSignIn />} />
           <Route path="/user-signup" element={<UserSignUp />} />
+          <Route path="/find-id" element={<FindID />} />
           <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* Fallback Route */}
@@ -53,5 +54,5 @@ const App = () => {
       </Router>
     </>
   );
-}
+};
 export default App;

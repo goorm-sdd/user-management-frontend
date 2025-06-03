@@ -18,7 +18,7 @@ const SignInForm = () => {
               Sign In
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Enter your email and password to sign in!
+              이메일과 비밀번호를 입력하고 로그인 하세요!
             </p>
           </div>
           <div>
@@ -26,18 +26,18 @@ const SignInForm = () => {
               <div className="space-y-6">
                 <div>
                   <Label>
-                    Email <span className="text-error-500">*</span>{" "}
+                    이메일 <span className="text-error-500">*</span>{" "}
                   </Label>
                   <Input placeholder="info@gmail.com" />
                 </div>
                 <div>
                   <Label>
-                    Password <span className="text-error-500">*</span>{" "}
+                    비밀번호 <span className="text-error-500">*</span>{" "}
                   </Label>
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
+                      placeholder="비밀번호를 입력하세요"
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}
@@ -55,20 +55,31 @@ const SignInForm = () => {
                   <div className="flex items-center gap-3">
                     <Checkbox checked={isChecked} onChange={setIsChecked} />
                     <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
-                      Keep me logged in
+                      로그인 상태 유지
                     </span>
                   </div>
                   <Link
-                    to="/reset-password"
+                    to="/find-id"
                     className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
                   >
-                    Forgot password?
+                    이메일 또는 비밀번호를 잊어버렸나요?
                   </Link>
                 </div>
                 <div>
                   <Button className="w-full" size="sm">
                     Sign in
                   </Button>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
+                    회원이 아니신가요?
+                  </span>
+                  <Link
+                    to="#"
+                    className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                  >
+                    회원가입
+                  </Link>
                 </div>
               </div>
             </form>
@@ -77,5 +88,5 @@ const SignInForm = () => {
       </div>
     </div>
   );
-}
+};
 export default SignInForm;
