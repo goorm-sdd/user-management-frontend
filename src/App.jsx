@@ -5,8 +5,8 @@ import NotFound from "./pages/OtherPage/NotFound";
 import ErrorServer from "./pages/OtherPage/ErrorServer";
 import Success from "./pages/OtherPage/Success";
 import LoginSuccess from "./pages/AuthPages/LoginSuccess";
-import UserDetails from "./pages/UserDetails";
-import UserProfiles from "./pages/UserProfiles";
+import AdminUserDetails from "./pages/UserProfiles/AdminUserDetails";
+import UserProfiles from "./pages/UserProfileS/UserProfiles";
 import DashboardTables from "./pages/Tables/DashboardTables";
 import DeleteUserTables from "./pages/Tables/DeleteUserTables";
 import NotCertifiedUserTables from "./pages/Tables/NotCertifiedUserTables";
@@ -34,7 +34,7 @@ const App = () => {
             <Route index path="/" element={<Dashboard />} />
 
             {/* Others Page */}
-            <Route path="/user-detail" element={<UserDetails />} />
+            <Route path="/user-detail" element={<AdminUserDetails />} />
 
             {/* Forms */}
             <Route path="/form-elements" element={<FormElements />} />
@@ -65,6 +65,7 @@ const App = () => {
           <Route element={<UserLayout />}>
             <Route path="/profile" element={<UserProfiles />} />
           </Route>
+          
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
           <Route path="/success" element={<Success />} />

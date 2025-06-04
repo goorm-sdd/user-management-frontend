@@ -1,5 +1,5 @@
-import PageBreadcrumb from "../components/common/PageBreadCrumb";
-import UserInfoCard from "../components/UserProfile/UserInfoCard";
+import PageBreadcrumb from "../../components/common/PageBreadCrumb";
+import UserInfoCard from "../../components/UserProfile/UserInfoCard";
 
 const UserProfiles = () => {
   return (
