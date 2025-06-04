@@ -5,15 +5,23 @@ import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
 
-const ResetPasswordForm = () => {
+const ResetPasswordForm = ({ role = "user" }) => {
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
   const navigate = useNavigate();
 
+  const handleForgotClick = () => {
+    if (role === "admin") {
+      navigate("/admin-find-id");
+    } else {
+      navigate("/find-id");
+    }
+  };
+
   const handleSendPassword = (e) => {
     e.preventDefault();
     //여기 서버 요청 추가 예정이에용
-    navigate("/password-sent");
+    navigate("/password-sent", { state: { role } });
   };
 
   return (
@@ -75,12 +83,12 @@ const ResetPasswordForm = () => {
                   </div>
                 </div>
                 <div className="flex justify-end my-3">
-                  <Link
-                    to="/find-id"
-                    className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                  <span
+                    onClick={handleForgotClick}
+                    className="cursor-pointer text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
                   >
                     아뇨, 이메일이 기억이 안납니다..
-                  </Link>
+                  </span>
                 </div>
                 <div>
                   <Button className="w-full" size="sm" type="submit">
@@ -94,12 +102,22 @@ const ResetPasswordForm = () => {
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
                 잠깐, 비밀번호가 기억난 거 같아요
               </p>
-              <Link
-                to="/user-signin"
-                className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
-              >
-                로그인하기
-              </Link>
+              {role !== "admin" && (
+                <Link
+                  to="/"
+                  className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                >
+                  로그인하기
+                </Link>
+              )}
+              {role === "admin" && (
+                <Link
+                  to="/admin-signin"
+                  className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                >
+                  로그인하기
+                </Link>
+              )}
             </div>
           </div>
         </div>

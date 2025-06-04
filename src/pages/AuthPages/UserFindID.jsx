@@ -1,6 +1,6 @@
-import FindIDForm from "../../components/auth/FindIDFrom";
+import FindIDForm from "../../components/auth/FindIDForm";
 
-const FindID = () => {
+const UserFindID = () => {
   return (
     <div className="relative flex flex-col justify-center w-full h-screen lg:flex-row dark:bg-gray-900 sm:p-0">
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
@@ -9,4 +9,4 @@ const FindID = () => {
     </div>
   );
 };
-export default FindID;
+export default UserFindID;

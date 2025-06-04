@@ -11,10 +11,18 @@ const SignInForm = ({ role = "user" }) => {
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
 
+  const handleForgotClick = () => {
+    if (role === "admin") {
+      navigate("/admin-find-id");
+    } else {
+      navigate("/find-id");
+    }
+  };
+
   const handleSuccess = (e) => {
     e.preventDefault();
     if (role === "admin") {
-      navigate("/");
+      navigate("/admin");
     } else {
       navigate("/login-success");
     }
@@ -69,29 +77,31 @@ const SignInForm = ({ role = "user" }) => {
                       로그인 상태 유지
                     </span>
                   </div>
-                  <Link
-                    to="/find-id"
-                    className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                  <span
+                    onClick={handleForgotClick}
+                    className="cursor-pointer text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
                   >
                     이메일 또는 비밀번호를 잊어버렸나요?
-                  </Link>
+                  </span>
                 </div>
                 <div>
                   <Button className="w-full" size="sm" type="submit">
                     Sign in
                   </Button>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
-                    회원이 아니신가요?
-                  </span>
-                  <Link
-                    to="#"
-                    className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
-                  >
-                    회원가입
-                  </Link>
-                </div>
+                {role !== "admin" && (
+                  <div className="flex items-center gap-2">
+                    <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
+                      회원이 아니신가요?
+                    </span>
+                    <Link
+                      to="/sign-up"
+                      className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                    >
+                      회원가입
+                    </Link>
+                  </div>
+                )}
               </div>
             </form>
           </div>

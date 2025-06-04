@@ -1,27 +1,31 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ScrollToTop from "./components/common/ScrollToTop";
+
+import AppLayout from "./layout/AppLayout";
+import UserLayout from "./layout/UserLayout";
+
 import UserSignIn from "./pages/AuthPages/UserSignIn";
 import UserSignUp from "./pages/AuthPages/UserSignUp";
-import NotFound from "./pages/OtherPage/NotFound";
-import ErrorServer from "./pages/OtherPage/ErrorServer";
-import Success from "./pages/OtherPage/Success";
 import LoginSuccess from "./pages/AuthPages/LoginSuccess";
+import UserFindID from "./pages/AuthPages/UserFindID";
+import FoundEmail from "./pages/AuthPages/FoundEmail";
+import UserResetPassword from "./pages/AuthPages/UserResetPassword";
+import PasswordSent from "./pages/AuthPages/PasswordSent";
+import Success from "./pages/OtherPage/Success";
+import ErrorServer from "./pages/OtherPage/ErrorServer";
+import NotFound from "./pages/OtherPage/NotFound";
+import UserProfiles from "./pages/UserProfiles/UserProfiles";
+
+import AdminSignIn from "./pages/AuthPages/AdminSignin";
+import AdminFindID from "./pages/AuthPages/AdminFindID";
+import AdminResetPassword from "./pages/AuthPages/AdminResetPassword";
 import AdminUserDetails from "./pages/UserProfiles/AdminUserDetails";
-import UserProfiles from "./pages/UserProfileS/UserProfiles";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import DashboardTables from "./pages/Tables/DashboardTables";
 import DeleteUserTables from "./pages/Tables/DeleteUserTables";
 import NotCertifiedUserTables from "./pages/Tables/NotCertifiedUserTables";
 import UserTables from "./pages/Tables/UserTables";
 import FormElements from "./pages/Forms/FormElements";
-import AppLayout from "./layout/AppLayout";
-import UserLayout from "./layout/UserLayout";
-import ScrollToTop from "./components/common/ScrollToTop";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import FindID from "./pages/AuthPages/FindId";
-import FoundEmail from "./pages/AuthPages/FoundEmail";
-import ResetPassword from "./pages/AuthPages/ResetPassword";
-import PasswordSent from "./pages/AuthPages/PasswordSent";
-import AdminSignIn from "./pages/AuthPages/AdminSignin";
-import AdminSignUp from "./pages/AuthPages/AdminSignUp";
 
 const App = () => {
   return (
@@ -29,47 +33,45 @@ const App = () => {
       <Router>
         <ScrollToTop />
         <Routes>
-          {/* Dashboard Layout */}
-          <Route element={<AppLayout />}>
-            <Route index path="/" element={<Dashboard />} />
+          {/* 사용자 라우트 */}
+          <Route path="/" element={<UserSignIn />} />
+          <Route path="/sign-up" element={<UserSignUp />} />
+          <Route path="/login-success" element={<LoginSuccess />} />
+          <Route path="/find-id" element={<UserFindID />} />
+          <Route path="/found-email" element={<FoundEmail />} />
+          <Route path="/reset-password" element={<UserResetPassword />} />
+          <Route path="/password-sent" element={<PasswordSent />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/error-server" element={<ErrorServer />} />
 
-            {/* Others Page */}
-            <Route path="/user-detail" element={<AdminUserDetails />} />
+          <Route element={<UserLayout />}>
+            <Route path="/profile" element={<UserProfiles />} />
+          </Route>
 
-            {/* Forms */}
-            <Route path="/form-elements" element={<FormElements />} />
-
-            {/* Tables */}
-            <Route path="/dashboard-tables" element={<DashboardTables />} />
-            <Route path="/user-tables" element={<UserTables />} />
-            <Route path="/delete-user" element={<DeleteUserTables />} />
+          {/* 관리자 라우트 */}
+          <Route path="/admin-signin" element={<AdminSignIn />} />
+          <Route path="/admin-find-id" element={<AdminFindID />} />
+          <Route path="/admin-found-email" element={<FoundEmail />} />
+          <Route
+            path="/admin-reset-password"
+            element={<AdminResetPassword />}
+          />
+          <Route path="/admin-password-sent" element={<PasswordSent />} />
+          <Route path="/admin" element={<AppLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="user-detail" element={<AdminUserDetails />} />
+            <Route path="form-elements" element={<FormElements />} />
+            <Route path="dashboard-tables" element={<DashboardTables />} />
+            <Route path="user-tables" element={<UserTables />} />
+            <Route path="delete-user" element={<DeleteUserTables />} />
             <Route
-              path="/not-certified-user"
+              path="not-certified-user"
               element={<NotCertifiedUserTables />}
             />
           </Route>
 
-          {/* Auth Layout */}
-          <Route path="/admin-signin" element={<AdminSignIn />} />
-          <Route path="/admin-signup" element={<AdminSignUp />} />
-
-          <Route path="/user-signin" element={<UserSignIn />} />
-          <Route path="/user-signup" element={<UserSignUp />} />
-          <Route path="/login-success" element={<LoginSuccess />} />
-          <Route path="/find-id" element={<FindID />} />
-          <Route path="/found-email" element={<FoundEmail />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/password-sent" element={<PasswordSent />} />
-
-          {/* other Layout */}
-          <Route element={<UserLayout />}>
-            <Route path="/profile" element={<UserProfiles />} />
-          </Route>
-          
-          {/* Fallback Route */}
+          {/* 404 */}
           <Route path="*" element={<NotFound />} />
-          <Route path="/success" element={<Success />} />
-          <Route path="/error-server" element={<ErrorServer />} />
         </Routes>
       </Router>
     </>

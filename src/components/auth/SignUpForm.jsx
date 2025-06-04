@@ -82,7 +82,7 @@ const SignUpForm = () => {
                 {/* <!-- Confirm Password --> */}
                 <div>
                   <Label>
-                  비밀번호 확인<span className="text-error-500">*</span>
+                    비밀번호 확인<span className="text-error-500">*</span>
                   </Label>
                   <div className="relative">
                     <Input
@@ -90,7 +90,9 @@ const SignUpForm = () => {
                       type={showConfirmPassword ? "text" : "password"}
                     />
                     <span
-                      onClick={() => setShowConfirmShowPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmShowPassword(!showConfirmPassword)
+                      }
                       className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
                     >
                       {showConfirmPassword ? (
@@ -104,7 +106,7 @@ const SignUpForm = () => {
                 {/* <!-- Phone Number --> */}
                 <div>
                   <Label>
-                  전화번호<span className="text-error-500">*</span>
+                    전화번호<span className="text-error-500">*</span>
                   </Label>
                   <div className="flex items-center justify-between">
                     <Input
@@ -114,23 +116,27 @@ const SignUpForm = () => {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                     />
-                    <Button disabled={phone.trim() === ""}>인증번호 발송</Button>
+                    <Button disabled={phone.trim() === ""}>
+                      인증번호 발송
+                    </Button>
                   </div>
                 </div>
                 {/* <!-- Verification Code  * --> */}
                 <div>
                   <Label>
-                  인증번호  *<span className="text-error-500">*</span>
+                    인증번호 *<span className="text-error-500">*</span>
                   </Label>
                   <div className="flex items-center justify-between">
-                      <Input
-                        className="flex-grow mr-35"
-                        placeholder="000000"
-                        type="text"
-                        value={verificationCode}
-                        onChange={(e) => setVerificationCode(e.target.value)}
-                      />
-                    <Button disabled={verificationCode.trim() === ""}>인증번호 확인</Button>
+                    <Input
+                      className="flex-grow mr-35"
+                      placeholder="000000"
+                      type="text"
+                      value={verificationCode}
+                      onChange={(e) => setVerificationCode(e.target.value)}
+                    />
+                    <Button disabled={verificationCode.trim() === ""}>
+                      인증번호 확인
+                    </Button>
                   </div>
                 </div>
                 {/* <!-- Checkbox --> */}
@@ -141,13 +147,13 @@ const SignUpForm = () => {
                     onChange={setIsChecked}
                   />
                   <p className="inline-block text-sm font-normal text-gray-500 dark:text-gray-400">
-                  계정을 생성하면{" "}
+                    계정을 생성하면{" "}
                     <span className="text-gray-800 dark:text-white/90">
-                    이용 약관,
+                      이용 약관,
                     </span>{" "}
                     및{" "}
                     <span className="text-gray-800 dark:text-white">
-                    개인정보 보호정책
+                      개인정보 보호정책
                     </span>
                     동의하는 것으로 간주됩니다.
                   </p>
@@ -160,11 +166,22 @@ const SignUpForm = () => {
                 </div>
               </div>
             </form>
-            <div className="mt-5"><p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">이미 계정이 있으신가요? <a className="text-brand-500 hover:text-brand-600 dark:text-brand-400" href="/signin" data-discover="true">로그인하기</a></p></div>
+            <div className="mt-5">
+              <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
+                이미 계정이 있으신가요?{" "}
+                <a
+                  className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                  href="/"
+                  data-discover="true"
+                >
+                  로그인하기
+                </a>
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 export default SignUpForm;

@@ -1,11 +1,17 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../../../src/components/ui/button/Button";
 
 const PasswordSent = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const role = location.state?.role || "user";
 
   const handleGoToSignIn = () => {
-    navigate("/user-signin");
+    if (role === "admin") {
+      navigate("/admin-signin");
+    } else {
+      navigate("/");
+    }
   };
 
   return (
