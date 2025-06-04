@@ -1,3 +1,6 @@
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { signInSchema } from "../../schemas/authSchema";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
@@ -11,20 +14,28 @@ const SignInForm = ({ role = "user" }) => {
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(signInSchema),
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
+    if (role === "admin") {
+      navigate("/admin");
+    } else {
+      navigate("/login-success");
+    }
+  };
+
   const handleForgotClick = () => {
     if (role === "admin") {
       navigate("/admin-find-id");
     } else {
       navigate("/find-id");
-    }
-  };
-
-  const handleSuccess = (e) => {
-    e.preventDefault();
-    if (role === "admin") {
-      navigate("/admin");
-    } else {
-      navigate("/login-success");
     }
   };
 
@@ -41,13 +52,22 @@ const SignInForm = ({ role = "user" }) => {
             </p>
           </div>
           <div>
-            <form onSubmit={handleSuccess}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="space-y-6">
                 <div>
                   <Label>
                     이메일 <span className="text-error-500">*</span>{" "}
                   </Label>
-                  <Input placeholder="info@gmail.com" />
+                  <Input
+                    placeholder="info@gmail.com"
+                    {...register("email")}
+                    error={!!errors.email}
+                  />
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <Label>
@@ -57,6 +77,7 @@ const SignInForm = ({ role = "user" }) => {
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="비밀번호를 입력하세요"
+                      {...register("password")}
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}
@@ -69,6 +90,11 @@ const SignInForm = ({ role = "user" }) => {
                       )}
                     </span>
                   </div>
+                  {errors.password && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.password.message}{" "}
+                    </p>
+                  )}
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
