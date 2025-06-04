@@ -13,14 +13,12 @@ const AuthLayout = ({ children }) => {
             {/* <!-- ===== Common Grid Shape Start ===== --> */}
             <GridShape />
             <div className="flex flex-col items-center max-w-xs">
-              <Link to="/" className="block mb-4">
-                <img
-                  width={231}
-                  height={48}
-                  src="/images/logo/logo-dark.svg"
-                  alt="Logo"
-                />
-              </Link>
+              <img
+                width={231}
+                height={48}
+                src="/images/logo/logo-dark.svg"
+                alt="Logo"
+              />
             </div>
           </div>
         </div>
