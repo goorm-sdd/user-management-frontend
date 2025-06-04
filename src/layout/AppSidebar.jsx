@@ -20,50 +20,27 @@ const navItems = [
   {
     icon: <GridIcon />,
     name: "대시보드",
-    path: "/",
-  },
-  {
-    icon: <UserCircleIcon />,
-    name: "내 정보",
-    path: "/profile",
+    path: "/admin",
   },
   {
     icon: <UserCircleIcon />,
     name: "회원 상세 정보",
-    path: "/user-detail",
+    path: "/admin/user-detail",
   },
   {
     icon: <TableIcon />,
     name: "전체 회원",
-    path: "/user-tables",
+    path: "/admin/user-tables",
   },
   {
     name: "탈퇴 회원",
     icon: <ListIcon />,
-    path: "/delete-user",
+    path: "/admin/delete-user",
   },
   {
     name: "미인증 회원",
     icon: <FileIcon />,
-    path: "/not-certified-user",
-  },
-  {
-    name: "회원 가입",
-    icon: <BoltIcon />,
-    subItems: [
-      { name: "User Sign In", path: "/user-signin" },
-      { name: "User Sign Up", path: "/user-signup" },
-      { name: "Reset Password", path: "/reset-password" },
-    ],
-  },
-  {
-    name: "관리자 로그인",
-    icon: <PlugInIcon />,
-    subItems: [
-      { name: "Admin Sign In", path: "/admin-signin" },
-      { name: "Admin Sign Up", path: "/admin-signup" },
-      { name: "Reset Password", path: "/reset-password" },
-    ],
+    path: "/admin/not-certified-user",
   },
 ];
 
@@ -284,7 +261,7 @@ const AppSidebar = () => {
           !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
         }`}
       >
-        <Link to="/">
+        <Link to="/admin">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <img

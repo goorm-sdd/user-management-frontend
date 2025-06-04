@@ -1,10 +1,8 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "../../../src/components/ui/button/Button";
 
-const FoundEmail = () => {
+const FoundEmail = ({ role = "user" }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const role = location.state?.role || "user";
 
   const handleGoToSignIn = () => {
     if (role === "admin") {
