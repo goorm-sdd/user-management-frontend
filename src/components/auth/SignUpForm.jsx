@@ -8,6 +8,7 @@ import Button from "../ui/button/Button";
 const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [isChecked, setIsChecked] = useState(false);
@@ -43,12 +44,18 @@ const SignUpForm = () => {
                   <Label>
                     이메일 주소<span className="text-error-500">*</span>
                   </Label>
-                  <Input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="이메일 주소"
-                  />
+                  <div className="flex items-center justify-between">
+                    <Input
+                      className="flex-grow mr-41"
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="이메일 주소"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Button disabled={email.trim() === ""}>중복 확인</Button>
+                  </div>
                 </div>
                 {/* <!-- Password --> */}
                 <div>
