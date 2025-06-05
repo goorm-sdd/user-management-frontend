@@ -15,6 +15,7 @@ import Success from "./pages/OtherPage/Success";
 import ErrorServer from "./pages/OtherPage/ErrorServer";
 import NotFound from "./pages/OtherPage/NotFound";
 import UserProfiles from "./pages/UserProfiles/UserProfiles";
+import UserEditProfiles from "./pages/UserProfiles/UserEditProfiles";
 
 import AdminSignIn from "./pages/AuthPages/AdminSignin";
 import AdminFindID from "./pages/AuthPages/AdminFindID";
@@ -46,9 +47,10 @@ const App = () => {
 
           <Route element={<UserLayout />}>
             <Route path="/profile" element={<UserProfiles />} />
+            <Route path="/profile-edit" element={<UserEditProfiles />} />
           </Route>
 
-          {/* 관리자 라우트 */}
+            {/* 관리자 라우트 */}
           <Route path="/admin-signin" element={<AdminSignIn />} />
           <Route path="/admin-find-id" element={<AdminFindID />} />
           <Route path="/admin-found-email" element={<FoundEmail />} />
