@@ -1,64 +1,52 @@
-import { useState } from "react";
-import { useModal } from "../../hooks/useModal";
-import { Modal } from "../ui/modal";
-import Button from "../ui/button/Button";
-import Input from "../form/input/InputField";
-import Label from "../form/Label";
+import { useNavigate } from 'react-router-dom';
 
 const UserInfoCard = () => {
-  const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const { isOpen, openModal, closeModal } = useModal();
-  
-  const handleSave = () => {
-    // Handle save logic here
-    console.log("Saving changes...");
-    closeModal();
-  };
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/profile-edit');
+  }
   return (
     <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <div>
-            <div className="">
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                이름
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                홍길동
-              </p>
-            </div>
+          <div className="">
+            <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+              이름
+            </p>
+            <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+              홍길동
+            </p>
+          </div>
 
-            <div className="mt-5">
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                이메일 주소
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                randomuser@pimjo.com
-              </p>
-            </div>
+          <div className="mt-5">
+            <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+              이메일 주소
+            </p>
+            <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+              randomuser@pimjo.com
+            </p>
+          </div>
 
-            <div className="mt-5">
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                전화번호
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                010-0000-0000
-              </p>
-            </div>
-            <div className="mt-5">
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                비밀번호
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                **********
-              </p>
-            </div>
+          <div className="mt-5">
+            <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+              전화번호
+            </p>
+            <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+              010-0000-0000
+            </p>
+          </div>
+          <div className="mt-5">
+            <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+              비밀번호
+            </p>
+            <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+              **********
+            </p>
           </div>
         </div>
 
         <button
-          onClick={openModal}
+          onClick={handleClick}
           className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
         >
           <svg
@@ -79,85 +67,6 @@ const UserInfoCard = () => {
           Edit
         </button>
       </div>
-
-      <Modal isOpen={isOpen} onClose={closeModal} className="max-w-[700px] m-4">
-        <div className="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
-          <div className="px-2 pr-14">
-            <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-            My Profile
-            </h4>
-          </div>
-          
-          <form className="flex flex-col">
-            <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
-
-              <div className="">
-                <div className="mt-5">
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>이름</Label>
-                    <Input type="text" disabled placeholder="홍길동" />
-                  </div>
-
-                  <div className="col-span-2 lg:col-span-1 mt-5">
-                    <Label>이메일 주소</Label>
-                    <Input type="text" disabled placeholder="randomuser@pimjo.com" />
-                  </div>
-                </div>
-              </div>
-              <div className="mt-7">
-                <h5 className="mb-5 text-lg border-b font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                Account Security
-                </h5>
-                <div className="col-span-2 lg:col-span-1 mt-5">
-                  <Label>전화번호</Label>
-                  <div className="relative pr-32">
-                    <Input
-                      placeholder="010-0000-0000"
-                      type="text"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                    />
-                    <Button className="absolute right-0 top-0" disabled={phone.trim() === ""}>전화번호 변경</Button>
-                  </div>
-                </div>
-                <div className="col-span-2 lg:col-span-1 mt-5">
-                  <Label>비밀번호</Label>
-                  <div className="relative pr-32">
-                    <Input 
-                        type="password" 
-                        placeholder="*********"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)} />
-                      <Button className="absolute right-0 top-0" disabled={password.trim() === ""}>비밀번호 변경</Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="">
-              <h5 className="text-lg border-b font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-              Support Access
-              </h5>
-
-              <div className="mt-5">
-                <div className="col-span-2 lg:col-span-1 mt-5">
-                  <div className="flex items-center justify-between">
-                    <Label>회원 탈퇴를 희망 합니다.</Label>
-                    <Button className="bg-gray-300 hover:bg-gray-500">회원 탈퇴</Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
-              <Button size="sm" variant="outline" onClick={closeModal}>
-                닫기
-              </Button>
-              <Button size="sm" onClick={handleSave}>
-                저장
-              </Button>
-            </div>
-          </form>
-        </div>
-      </Modal>
     </div>
   );
 }
