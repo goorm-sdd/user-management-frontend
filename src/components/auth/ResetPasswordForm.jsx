@@ -1,3 +1,6 @@
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { resetPasswordSchema } from "../../schemas/authSchema";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -6,9 +9,17 @@ import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
 
 const ResetPasswordForm = ({ role = "user" }) => {
-  const [phone, setPhone] = useState("");
-  const [code, setCode] = useState("");
   const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(resetPasswordSchema) });
+
+  const phoneValue = watch("phone") || "";
+  const codeValue = watch("code") || "";
 
   const handleForgotClick = () => {
     if (role === "admin") {
@@ -18,9 +29,8 @@ const ResetPasswordForm = ({ role = "user" }) => {
     }
   };
 
-  const handleSendPassword = (e) => {
-    e.preventDefault();
-    //여기 서버 요청 추가 예정이에용
+  const onSubmit = (data) => {
+    console.log(data);
     navigate("/password-sent", { state: { role } });
   };
 
@@ -38,20 +48,32 @@ const ResetPasswordForm = ({ role = "user" }) => {
             </p>
           </div>
           <div>
-            <form onSubmit={handleSendPassword}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="space-y-6">
                 <div>
                   <Label>
                     이름 <span className="text-error-500">*</span>{" "}
                   </Label>
-                  <Input placeholder="홍길동" />
+                  <Input placeholder="홍길동" {...register("name")} />
+                  {errors.name && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.name.message}
+                    </p>
+                  )}
                 </div>
+
                 <div>
                   <Label>
                     이메일 <span className="text-error-500">*</span>
                   </Label>
-                  <Input placeholder="info@gmail.com" />
+                  <Input placeholder="info@gmail.com" {...register("email")} />
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
+
                 <div>
                   <Label>
                     전화번호 <span className="text-error-500">*</span>{" "}
@@ -60,13 +82,17 @@ const ResetPasswordForm = ({ role = "user" }) => {
                     <Input
                       className="flex-grow mr-35"
                       placeholder="010-0000-0000"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
+                      {...register("phone")}
                     />
-                    <Button disabled={phone.trim() === ""}>
+                    <Button disabled={phoneValue.trim() === ""}>
                       인증번호 발송
                     </Button>
                   </div>
+                  {errors.phone && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.phone.message}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <Label>
@@ -76,11 +102,17 @@ const ResetPasswordForm = ({ role = "user" }) => {
                     <Input
                       className="flex-grow mr-35"
                       placeholder="000000"
-                      value={code}
-                      onChange={(e) => setCode(e.target.value)}
+                      {...register("code")}
                     />
-                    <Button disabled={code.trim() === ""}>인증번호 확인</Button>
+                    <Button disabled={codeValue.trim() === ""}>
+                      인증번호 확인
+                    </Button>
                   </div>
+                  {errors.code && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.code.message}{" "}
+                    </p>
+                  )}
                 </div>
                 <div className="flex justify-end my-3">
                   <span
