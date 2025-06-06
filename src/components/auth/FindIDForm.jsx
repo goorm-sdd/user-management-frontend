@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { findIdSchema } from "../../schemas/authSchema";
 import { Link, useNavigate } from "react-router-dom";
+import { findEmail } from "../../services/authService";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
@@ -18,9 +19,15 @@ const FindIDForm = ({ role = "user" }) => {
   const phoneValue = watch("phone") || "";
   const codeValue = watch("code") || "";
 
-  const onSubmit = (data) => {
-    console.log(data);
-    navigate("/found-email", { state: { role } });
+  const onSubmit = async (data) => {
+    try {
+      const response = await findEmail(data);
+      const email = response.data.email;
+      navigate("/found-email", { state: { email, role } });
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || "이메일 찾기를 실패했습니다.");
+    }
   };
 
   const handleForgotClick = () => {
