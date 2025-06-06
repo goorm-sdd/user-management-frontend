@@ -4,6 +4,7 @@ import { signInSchema } from "../../schemas/authSchema";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
+import { login } from "../../services/authService";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
@@ -12,6 +13,7 @@ import Button from "../ui/button/Button";
 const SignInForm = ({ role = "user" }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const {
@@ -22,12 +24,22 @@ const SignInForm = ({ role = "user" }) => {
     resolver: yupResolver(signInSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    if (role === "admin") {
-      navigate("/admin");
-    } else {
-      navigate("/login-success");
+  const onSubmit = async (formData) => {
+    try {
+      const res = await login(formData);
+
+      const { accessToken, user } = res.data;
+
+      localStorage.setItem("accessToken", accessToken);
+
+      if (user.role === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/login-success");
+      }
+    } catch (err) {
+      const message = err.response?.data?.message || "로그인에 실패했습니다.";
+      setErrorMessage(message);
     }
   };
 
@@ -115,6 +127,11 @@ const SignInForm = ({ role = "user" }) => {
                     Sign in
                   </Button>
                 </div>
+                {errorMessage && (
+                  <p className="mt-2 text-sm text-red-500 text-center">
+                    {errorMessage}
+                  </p>
+                )}
                 {role !== "admin" && (
                   <div className="flex items-center gap-2">
                     <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
