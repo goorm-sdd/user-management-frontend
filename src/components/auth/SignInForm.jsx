@@ -32,7 +32,14 @@ const SignInForm = ({ role = "user" }) => {
       const res = await login(formData);
       const { accessToken, user } = res.data;
 
-      localStorage.setItem("accessToken", accessToken);
+      if (isChecked) {
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("accessToken", accessToken);
+      } else {
+        sessionStorage.setItem("user", JSON.stringify(user));
+        sessionStorage.setItem("accessToken", accessToken);
+      }
+
       loginUser(user);
 
       if (user.role === "ADMIN") {
