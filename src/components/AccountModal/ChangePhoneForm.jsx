@@ -110,7 +110,7 @@ const ChangePhoneForm = () => {
               onClick={handlePasswordSubmit}
               className="w-full bg-primary text-white rounded-lg py-2 hover:bg-primary-dark transition"
             >
-              인증코드 보내기
+              확인
             </Button>
           </div>
         </>
