@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import { login } from "../../services/authService";
+import useAuthStore from "../../store/useAuthStore";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
@@ -24,13 +25,15 @@ const SignInForm = ({ role = "user" }) => {
     resolver: yupResolver(signInSchema),
   });
 
+  const { login: loginUser } = useAuthStore();
+
   const onSubmit = async (formData) => {
     try {
       const res = await login(formData);
-
       const { accessToken, user } = res.data;
 
       localStorage.setItem("accessToken", accessToken);
+      loginUser(user);
 
       if (user.role === "ADMIN") {
         navigate("/admin");
@@ -71,7 +74,7 @@ const SignInForm = ({ role = "user" }) => {
                     이메일 <span className="text-error-500">*</span>{" "}
                   </Label>
                   <Input
-                    placeholder="info@gmail.com"
+                    placeholder="info@example.com"
                     {...register("email")}
                     error={!!errors.email}
                   />

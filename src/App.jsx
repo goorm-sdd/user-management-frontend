@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ScrollToTop from "./components/common/ScrollToTop";
+import ProtectedRoute from "./components/routes/ProtectedRoute";
 
 import AppLayout from "./layout/AppLayout";
 import UserLayout from "./layout/UserLayout";
@@ -14,6 +15,8 @@ import PasswordSent from "./pages/AuthPages/PasswordSent";
 import Success from "./pages/OtherPage/Success";
 import ErrorServer from "./pages/OtherPage/ErrorServer";
 import NotFound from "./pages/OtherPage/NotFound";
+import ForbiddenPage from "./pages/OtherPage/ForbiddenPage";
+
 import UserProfiles from "./pages/UserProfiles/UserProfiles";
 import UserEditProfiles from "./pages/UserProfiles/UserEditProfiles";
 
@@ -45,12 +48,18 @@ const App = () => {
           <Route path="/success" element={<Success />} />
           <Route path="/error-server" element={<ErrorServer />} />
 
-          <Route element={<UserLayout />}>
+          <Route
+            element={
+              <ProtectedRoute allowedRoles={["USER", "ADMIN"]}>
+                <UserLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route path="/profile" element={<UserProfiles />} />
             <Route path="/profile-edit" element={<UserEditProfiles />} />
           </Route>
 
-            {/* 관리자 라우트 */}
+          {/* 관리자 라우트 */}
           <Route path="/admin-signin" element={<AdminSignIn />} />
           <Route path="/admin-find-id" element={<AdminFindID />} />
           <Route path="/admin-found-email" element={<FoundEmail />} />
@@ -59,7 +68,14 @@ const App = () => {
             element={<AdminResetPassword />}
           />
           <Route path="/admin-password-sent" element={<PasswordSent />} />
-          <Route path="/admin" element={<AppLayout />}>
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute allowedRoles={["ADMIN"]}>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Dashboard />} />
             <Route path="user-detail" element={<AdminUserDetails />} />
             <Route path="form-elements" element={<FormElements />} />
@@ -71,6 +87,9 @@ const App = () => {
               element={<NotCertifiedUserTables />}
             />
           </Route>
+
+          {/* 접근 금지 페이지 */}
+          <Route path="/403" element={<ForbiddenPage />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
