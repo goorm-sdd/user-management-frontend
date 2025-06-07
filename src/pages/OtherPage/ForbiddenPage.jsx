@@ -1,0 +1,35 @@
+import { Link } from "react-router-dom";
+import GridShape from "../../components/common/GridShape";
+import PageMeta from "../../components/common/PageMeta";
+
+const ForbiddenPage = () => {
+  return (
+    <>
+      <PageMeta
+        title="React.js 404 Dashboard | TailAdmin - React.js Admin Dashboard Template"
+        description="This is React.js 404 Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
+      />
+      <div className="relative flex flex-col items-center justify-center min-h-screen p-6 overflow-hidden z-1">
+        <GridShape />
+        <div className="mx-auto w-full max-w-[242px] text-center sm:max-w-[472px]">
+          <h1 className="mb-8 font-bold text-gray-800 text-title-md dark:text-white/90 xl:text-title-2xl">
+            403 - 접근이 금지되었습니다.
+          </h1>
+
+          <p className="mt-10 mb-6 text-base text-gray-700 dark:text-gray-400 sm:text-lg">
+            이 페이지를 볼 권한이 없습니다.
+          </p>
+
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-3.5 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
+          >
+            Back to Home Page
+          </Link>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default ForbiddenPage;
