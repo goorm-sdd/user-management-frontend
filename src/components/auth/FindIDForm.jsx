@@ -4,7 +4,6 @@ import { findIdSchema } from "../../schemas/authSchema";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { findEmail } from "../../services/authService";
-//import { sendVerificationCode, verifyCode, findEmail} from "../../services/authService";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
