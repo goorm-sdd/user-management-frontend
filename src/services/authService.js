@@ -1,34 +1,42 @@
-import axiosInstance from "../libs/axiosInstance";
+// import axiosInstance from "../libs/axiosInstance";
 
-// 로그인
-// export const login = async ({ email, password }) => {
-//   const res = await axiosInstance.post("/api/auth/signin", {
-//     email,
-//     password,
+// // 로그인
+// export const login = async ({ email, password, isAdmin = false }) => {
+//   const url = isAdmin ? "/api/auth/admin/signin" : "/api/auth/signin";
+//   const response = await axiosInstance.post(url, { email, password });
+//   return response.data; // { data: { accessToken, user } }
+// };
+
+// // 로그아웃
+// export const logout = async (isAdmin = false) => {
+//   const url = isAdmin ? "/api/admin/signout" : "/api/signout";
+//   return await axiosInstance.post(url);
+// };
+
+// // 인증번호 발송
+// export const sendVerificationCode = async (phoneNumber) => {
+//   const response = await axiosInstance.post("/api/auth/phone/send", {
+//     phoneNumber,
 //   });
-//   return res.data;
-// };
-
-// 이메일 찾기
-// export const findEmail = async ({ name, phone, code }) => {
-//   try {
-//     const response = await axios.post("/api/auth/find/email", {
-//       username: name,
-//       phoneNumber: phone,
-//       code,
-//     });
-//     return response.data;
-// };
-
-// 인증번호 발송
-// export const sendVerificationCode = async (phone) => {
-//   const response = await axiosInstance.post("/api/auth/phone/send", { phoneNumber: phone });
 //   return response.data;
 // };
 
-// 인증번호 확인
-// export const verifyCode = async ({ phone, code }) => {
-//   const response = await axiosInstance.post("/api/auth/phone/verify", { phoneNumber: phone, code });
+// // 인증번호 확인
+// export const verifyCode = async ({ phoneNumber, code }) => {
+//   const response = await axiosInstance.post("/api/auth/phone/verify", {
+//     phoneNumber,
+//     code,
+//   });
+//   return response.data;
+// };
+
+// // 이메일 찾기
+// export const findEmail = async ({ username, phoneNumber, code }) => {
+//   const response = await axiosInstance.post("/api/auth/find/email", {
+//     username,
+//     phoneNumber,
+//     code,
+//   });
 //   return response.data;
 // };
 
