@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import ScrollToTop from "./components/common/ScrollToTop";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
+import useAuthStore from "./store/useAuthStore";
 
 import AppLayout from "./layout/AppLayout";
 import UserLayout from "./layout/UserLayout";
@@ -32,13 +34,29 @@ import UserTables from "./pages/Tables/UserTables";
 import FormElements from "./pages/Forms/FormElements";
 
 const App = () => {
+  const user = useAuthStore((state) => state.user);
+  const isLoggedIn = !!user;
+
   return (
     <>
       <Router>
         <ScrollToTop />
         <Routes>
           {/* 사용자 라우트 */}
-          <Route path="/" element={<UserSignIn />} />
+          <Route
+            path="/"
+            element={
+              isLoggedIn ? (
+                user.role === "ADMIN" ? (
+                  <Navigate to="/admin" replace />
+                ) : (
+                  <Navigate to="/profile" replace />
+                )
+              ) : (
+                <UserSignIn />
+              )
+            }
+          />
           <Route path="/sign-up" element={<UserSignUp />} />
           <Route path="/login-success" element={<LoginSuccess />} />
           <Route path="/find-id" element={<UserFindID />} />
@@ -60,7 +78,12 @@ const App = () => {
           </Route>
 
           {/* 관리자 라우트 */}
-          <Route path="/admin-signin" element={<AdminSignIn />} />
+          <Route
+            path="/admin-signin"
+            element={
+              isLoggedIn ? <Navigate to="/admin" replace /> : <AdminSignIn />
+            }
+          />
           <Route path="/admin-find-id" element={<AdminFindID />} />
           <Route path="/admin-found-email" element={<FoundEmail />} />
           <Route
