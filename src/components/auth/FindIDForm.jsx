@@ -19,11 +19,9 @@ const FindIDForm = ({ role = "user" }) => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(findIdSchema),
-    mode: "onSubmit",
-    reValidateMode: "onChange",
+    mode: "onChange",
   });
 
-  const phoneValue = watch("phone") || "";
   const codeValue = watch("code") || "";
 
   const [sentCode, setSentCode] = useState("");
