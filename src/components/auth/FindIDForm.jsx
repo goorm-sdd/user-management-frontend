@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { findIdSchema } from "../../schemas/authSchema";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,94 +14,86 @@ const FindIDForm = ({ role = "user" }) => {
     register,
     handleSubmit,
     watch,
+    trigger,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(findIdSchema) });
+  } = useForm({
+    resolver: yupResolver(findIdSchema),
+    mode: "onSubmit",
+    reValidateMode: "onChange",
+  });
 
   const phoneValue = watch("phone") || "";
   const codeValue = watch("code") || "";
 
-  // 인증 관련 상태
-  const [sentCode, setSentCode] = useState(""); //가짜 코드 발송
+  const [sentCode, setSentCode] = useState("");
   const [codeVerified, setCodeVerified] = useState(false);
   const [codeError, setCodeError] = useState("");
   const [message, setMessage] = useState("");
 
+  // 로딩 상태
+  const [loadingSend, setLoadingSend] = useState(false);
+  const [loadingVerify, setLoadingVerify] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
   // 가짜 인증번호 발송
-  const handleSendCode = () => {
+  const handleSendCode = async () => {
+    const isValid = await trigger("phone");
+    if (!isValid) return;
+
+    setLoadingSend(true);
     const generatedCode = "123456";
-    setSentCode(generatedCode);
-    setCodeVerified(false);
-    setCodeError("");
-    setMessage("인증번호가 발송되었습니다.");
-    console.log("발송된 인증번호:", generatedCode);
+    setTimeout(() => {
+      setSentCode(generatedCode);
+      setCodeVerified(false);
+      setCodeError("");
+      setMessage("인증번호가 발송되었습니다.");
+      console.log("발송된 인증번호:", generatedCode);
+      setLoadingSend(false);
+    }, 1000);
   };
 
   // 인증번호 확인
   const handleVerifyCode = () => {
-    if (codeValue === sentCode) {
-      setCodeVerified(true);
-      setCodeError("");
-    } else {
-      setCodeVerified(false);
-      setCodeError("인증번호가 일치하지 않습니다.");
-    }
+    setLoadingVerify(true);
+    setTimeout(() => {
+      if (codeValue === sentCode) {
+        setCodeVerified(true);
+        setCodeError("");
+      } else {
+        setCodeVerified(false);
+        setCodeError("인증번호가 일치하지 않습니다.");
+      }
+      setLoadingVerify(false);
+    }, 800);
   };
 
-  //인증번호 발송
-  //   const handleSendCode = async () => {
-  //   try {
-  //     await sendVerificationCode(phoneValue);
-  //     setMessage("인증번호가 발송되었습니다.");
-  //     setCodeError("");
-  //   } catch (err) {
-  //     console.error(err);
-  //     setMessage("");
-  //     setCodeError(err.response?.data?.message || "인증번호 발송 실패");
-  //   }
-  // };
-
-  // 인증번호 확인
-  // const handleVerifyCode = async () => {
-  //   try {
-  //     await verifyCode({ phoneNumber: phoneValue, code: codeValue });
-  //     setCodeVerified(true);
-  //     setCodeError("");
-  //   } catch (err) {
-  //     console.error(err);
-  //     setCodeVerified(false);
-  //     setCodeError(err.response?.data?.message || "인증번호 확인 실패");
-  //   }
-  // };
-
+  // 이메일 찾기
   const onSubmit = async (data) => {
     if (!codeVerified) {
       alert("인증을 완료해주세요.");
       return;
     }
 
+    setSubmitting(true);
     try {
       const response = await findEmail({
         name: data.name,
         phone: data.phone,
         code: data.code,
-        sentCode, // 인증 성공을 위해 사용된 코드
+        sentCode,
       });
-
-      console.log("최종 제출 데이터:", data);
       navigate("/found-email", {
         state: { email: response.data.email, role },
       });
     } catch (err) {
       alert(err.response?.data?.message || "이메일 찾기 실패");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const handleForgotClick = () => {
-    if (role === "admin") {
-      navigate("/admin-reset-password");
-    } else {
-      navigate("/reset-password");
-    }
+    navigate(role === "admin" ? "/admin-reset-password" : "/reset-password");
   };
 
   return (
@@ -119,12 +111,16 @@ const FindIDForm = ({ role = "user" }) => {
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-6">
-              {/* 이름 입력 */}
+              {/* 이름 */}
               <div>
                 <Label>
-                  이름 <span className="text-error-500">*</span>{" "}
+                  이름 <span className="text-error-500">*</span>
                 </Label>
-                <Input placeholder="홍길동" {...register("name")} />
+                <Input
+                  placeholder="홍길동"
+                  disabled={submitting}
+                  {...register("name")}
+                />
                 {errors.name && (
                   <p className="mt-1 text-sm text-red-500">
                     {errors.name.message}
@@ -132,23 +128,24 @@ const FindIDForm = ({ role = "user" }) => {
                 )}
               </div>
 
-              {/* 전화번호 입력 + 인증번호 발송 */}
+              {/* 전화번호 + 발송 */}
               <div>
                 <Label>
-                  전화번호 <span className="text-error-500">*</span>{" "}
+                  전화번호 <span className="text-error-500">*</span>
                 </Label>
                 <div className="flex items-center justify-between">
                   <Input
                     className="flex-grow mr-35"
                     placeholder="010-0000-0000"
+                    disabled={codeVerified || loadingSend || submitting}
                     {...register("phone")}
                   />
                   <Button
                     type="button"
                     onClick={handleSendCode}
-                    disabled={phoneValue.trim() === ""}
+                    disabled={codeVerified || loadingSend || submitting}
                   >
-                    인증번호 발송
+                    {loadingSend ? "발송 중..." : "인증번호 발송"}
                   </Button>
                 </div>
                 {errors.phone && (
@@ -161,23 +158,29 @@ const FindIDForm = ({ role = "user" }) => {
                 )}
               </div>
 
-              {/* 인증번호 입력 + 확인 */}
+              {/* 인증번호 + 확인 */}
               <div>
                 <Label>
-                  인증번호 <span className="text-error-500">*</span>{" "}
+                  인증번호 <span className="text-error-500">*</span>
                 </Label>
                 <div className="flex items-center justify-between">
                   <Input
                     className="flex-grow mr-35"
                     placeholder="000000"
+                    disabled={codeVerified || loadingVerify || submitting}
                     {...register("code")}
                   />
                   <Button
                     type="button"
                     onClick={handleVerifyCode}
-                    disabled={codeValue.trim() === ""}
+                    disabled={
+                      codeVerified ||
+                      codeValue.trim() === "" ||
+                      loadingVerify ||
+                      submitting
+                    }
                   >
-                    인증번호 확인
+                    {loadingVerify ? "확인 중..." : "인증번호 확인"}
                   </Button>
                 </div>
                 {errors.code && (
@@ -189,11 +192,11 @@ const FindIDForm = ({ role = "user" }) => {
                   <p className="mt-1 text-sm text-red-500">{codeError}</p>
                 )}
                 {codeVerified && (
-                  <p className="mt-1 text-sm text-green-500"> 인증 성공</p>
+                  <p className="mt-1 text-sm text-green-500">인증 성공</p>
                 )}
               </div>
 
-              {/* 비밀번호 찾기로 이동 */}
+              {/* 비밀번호 찾기 이동 */}
               <div className="flex justify-end my-3">
                 <span
                   onClick={handleForgotClick}
@@ -205,8 +208,13 @@ const FindIDForm = ({ role = "user" }) => {
 
               {/* 제출 */}
               <div>
-                <Button className="w-full" size="sm" type="submit">
-                  Find email
+                <Button
+                  className="w-full"
+                  size="sm"
+                  type="submit"
+                  disabled={submitting}
+                >
+                  {submitting ? "조회 중..." : "Find email"}
                 </Button>
               </div>
             </div>
@@ -214,25 +222,15 @@ const FindIDForm = ({ role = "user" }) => {
 
           {/* 로그인으로 돌아가기 */}
           <div className="flex items-center gap-2 mt-5">
-            <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
+            <p className="text-sm text-gray-700 dark:text-gray-400">
               잠깐, 이메일이 기억난 거 같아요
             </p>
-            {role !== "admin" && (
-              <Link
-                to="/"
-                className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
-              >
-                로그인하기
-              </Link>
-            )}
-            {role === "admin" && (
-              <Link
-                to="/admin-signin"
-                className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
-              >
-                로그인하기
-              </Link>
-            )}
+            <Link
+              to={role === "admin" ? "/admin-signin" : "/"}
+              className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+            >
+              로그인하기
+            </Link>
           </div>
         </div>
       </div>
