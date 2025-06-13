@@ -1,8 +1,14 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { resetPasswordSchema } from "../../schemas/authSchema";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+
+import {
+  sendVerificationCode,
+  verifyCode,
+  resetPassword,
+} from "../../services/authService";
 
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
@@ -17,11 +23,14 @@ const ResetPasswordForm = ({ role = "user" }) => {
     watch,
     trigger,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(resetPasswordSchema), mode: "onChange" });
+  } = useForm({
+    resolver: yupResolver(resetPasswordSchema),
+    mode: "onChange",
+  });
 
+  const phoneValue = watch("phone") || "";
   const codeValue = watch("code") || "";
 
-  const [sentCode, setSentCode] = useState("");
   const [codeVerified, setCodeVerified] = useState(false);
   const [codeError, setCodeError] = useState("");
   const [message, setMessage] = useState("");
@@ -30,52 +39,59 @@ const ResetPasswordForm = ({ role = "user" }) => {
   const [loadingVerify, setLoadingVerify] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // 인증번호 발송 (가짜)
+  // 인증번호 에러 메시지
+  useEffect(() => {
+    if (codeError && codeValue !== "") {
+      setCodeError("");
+    }
+  }, [codeValue, codeError]);
+
+  // 인증번호 발송
   const handleSendCode = async () => {
     const isValid = await trigger("phone");
     if (!isValid) return;
 
     setLoadingSend(true);
-    const generatedCode = "123456";
-    setTimeout(() => {
-      setSentCode(generatedCode);
+    try {
+      await sendVerificationCode(phoneValue);
+      setMessage("인증번호가 발송되었습니다.");
       setCodeVerified(false);
       setCodeError("");
-      setMessage("인증번호가 발송되었습니다.");
-      console.log("발송된 인증번호:", generatedCode);
+    } catch (err) {
+      alert("인증번호 발송 실패");
+    } finally {
       setLoadingSend(false);
-    }, 1000);
+    }
   };
 
   // 인증번호 확인
-  const handleVerifyCode = () => {
+  const handleVerifyCode = async () => {
     setLoadingVerify(true);
-    setTimeout(() => {
-      if (codeValue === sentCode) {
-        setCodeVerified(true);
-        setCodeError("");
-      } else {
-        setCodeVerified(false);
-        setCodeError("인증번호가 일치하지 않습니다.");
-      }
+    try {
+      await verifyCode({ phoneNumber: phoneValue, code: codeValue });
+      setCodeVerified(true);
+      setCodeError("");
+    } catch (err) {
+      setCodeVerified(false);
+      setCodeError("인증번호가 일치하지 않습니다.");
+    } finally {
       setLoadingVerify(false);
-    }, 800);
+    }
   };
 
   // 제출
   const onSubmit = async (data) => {
     if (!codeVerified) {
-      alert("인증을 완료해주세요.");
+      alert("전화번호 인증을 먼저 완료해주세요.");
       return;
     }
 
     setSubmitting(true);
     try {
-      console.log("입력된 정보:", data);
-      alert("테스트용: 임시 비밀번호가 발송되었다고 가정");
+      await resetPassword({ username: data.name, email: data.email });
       navigate("/password-sent", { state: { role } });
     } catch (err) {
-      alert("오류 발생");
+      alert(err.response?.data?.message || "임시 비밀번호 발송 실패");
     } finally {
       setSubmitting(false);
     }
