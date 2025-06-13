@@ -29,7 +29,7 @@ const SignInForm = ({ role = "user" }) => {
 
   const onSubmit = async (formData) => {
     try {
-      const res = await login(formData);
+      const res = await login({ ...formData });
       const { accessToken, user } = res.data;
 
       if (isChecked) {
@@ -54,11 +54,7 @@ const SignInForm = ({ role = "user" }) => {
   };
 
   const handleForgotClick = () => {
-    if (role === "admin") {
-      navigate("/admin-find-id");
-    } else {
-      navigate("/find-id");
-    }
+    navigate(role === "admin" ? "/admin-find-id" : "/find-id");
   };
 
   return (
@@ -73,94 +69,98 @@ const SignInForm = ({ role = "user" }) => {
               이메일과 비밀번호를 입력하고 로그인 하세요!
             </p>
           </div>
-          <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="space-y-6">
-                <div>
-                  <Label>
-                    이메일 <span className="text-error-500">*</span>{" "}
-                  </Label>
-                  <Input
-                    placeholder="info@example.com"
-                    {...register("email")}
-                    error={!!errors.email}
-                  />
-                  {errors.email && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.email.message}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <Label>
-                    비밀번호 <span className="text-error-500">*</span>{" "}
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="비밀번호를 입력하세요"
-                      {...register("password")}
-                    />
-                    <span
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
-                    >
-                      {showPassword ? (
-                        <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                      ) : (
-                        <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                      )}
-                    </span>
-                  </div>
-                  {errors.password && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.password.message}{" "}
-                    </p>
-                  )}
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Checkbox checked={isChecked} onChange={setIsChecked} />
-                    <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
-                      로그인 상태 유지
-                    </span>
-                  </div>
-                  <span
-                    onClick={handleForgotClick}
-                    className="cursor-pointer text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
-                  >
-                    이메일 또는 비밀번호를 잊어버렸나요?
-                  </span>
-                </div>
-                <div>
-                  <Button className="w-full" size="sm" type="submit">
-                    Sign in
-                  </Button>
-                </div>
-                {errorMessage && (
-                  <p className="mt-2 text-sm text-red-500 text-center">
-                    {errorMessage}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="space-y-6">
+              {/* 이메일 */}
+              <div>
+                <Label>
+                  이메일 <span className="text-error-500">*</span>
+                </Label>
+                <Input
+                  placeholder="info@example.com"
+                  {...register("email")}
+                  error={!!errors.email}
+                />
+                {errors.email && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.email.message}
                   </p>
                 )}
-                {role !== "admin" && (
-                  <div className="flex items-center gap-2">
-                    <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
-                      회원이 아니신가요?
-                    </span>
-                    <Link
-                      to="/sign-up"
-                      className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
-                    >
-                      회원가입
-                    </Link>
-                  </div>
+              </div>
+
+              {/* 비밀번호 */}
+              <div>
+                <Label>
+                  비밀번호 <span className="text-error-500">*</span>
+                </Label>
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="비밀번호를 입력하세요"
+                    {...register("password")}
+                  />
+                  <span
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                  >
+                    {showPassword ? (
+                      <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                    ) : (
+                      <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                    )}
+                  </span>
+                </div>
+                {errors.password && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.password.message}
+                  </p>
                 )}
               </div>
-            </form>
-          </div>
+
+              {/* 로그인 상태 유지 & 찾기 */}
+              <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center gap-2">
+                  <Checkbox checked={isChecked} onChange={setIsChecked} />
+                  <span className="text-sm text-gray-600">
+                    로그인 상태 유지
+                  </span>
+                </div>
+                <span
+                  onClick={handleForgotClick}
+                  className="text-sm text-brand-500 cursor-pointer"
+                >
+                  이메일 또는 비밀번호 찾기
+                </span>
+              </div>
+
+              <Button className="w-full mt-6" size="sm" type="submit">
+                Sign in
+              </Button>
+
+              {errorMessage && (
+                <p className="mt-2 text-sm text-red-500 text-center">
+                  {errorMessage}
+                </p>
+              )}
+              {role !== "admin" && (
+                <div className="flex items-center gap-2">
+                  <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
+                    회원이 아니신가요?
+                  </span>
+                  <Link
+                    to="/sign-up"
+                    className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                  >
+                    회원가입
+                  </Link>
+                </div>
+              )}
+            </div>
+          </form>
         </div>
       </div>
     </div>
   );
 };
+
 export default SignInForm;
