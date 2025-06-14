@@ -50,3 +50,10 @@ export const resetPassword = async ({ username, email }) => {
   });
   return response.data;
 };
+
+export const fetchDashboardUsers = async (pageNum, pageLimit) => {
+  const response = await axiosInstance.get(
+    `/api/admin/users/dashboard?pageNum=${pageNum}&pageLimit=${pageLimit}`
+  );
+  return response.data.data;
+};

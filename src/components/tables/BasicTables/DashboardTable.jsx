@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Trash2 } from "lucide-react";
+
 import {
   Table,
   TableBody,
@@ -10,156 +11,52 @@ import {
 
 import Badge from "../../ui/badge/Badge";
 import Pagination from "../../ui/pagination/pagination";
-
-// Define the table data using the interface
-const tableData = [
-  {
-    id: 1,
-    user: {
-      name: "user1",
-      role: "USER",
-    },
-    Email: "user1@user.com",
-    PhoneNumber: "010-1111-1111",
-    EmailCheck: "True",
-    status: "Delete",
-  },
-  {
-    id: 2,
-    user: {
-      name: "user2",
-      role: "USER",
-    },
-    Email: "user2@user.com",
-    PhoneNumber: "010-2222-2222",
-    EmailCheck: "False",
-    status: "Active",
-  },
-  {
-    id: 3,
-    user: {
-      name: "user3",
-      role: "USER",
-    },
-    Email: "user3@user.com",
-    PhoneNumber: "010-3333-3333",
-    EmailCheck: "True",
-    status: "Active",
-  },
-  {
-    id: 4,
-    user: {
-      name: "user4",
-      role: "USER",
-    },
-    Email: "user4@user.com",
-    PhoneNumber: "010-4444-4444",
-    EmailCheck: "False",
-    status: "Delete",
-  },
-  {
-    id: 5,
-    user: {
-      name: "user5",
-      role: "USER",
-    },
-    Email: "user5@user.com",
-    PhoneNumber: "010-5555-5555",
-    EmailCheck: "True",
-    status: "Active",
-  },
-  {
-    id: 6,
-    user: {
-      name: "user6",
-      role: "USER",
-    },
-    Email: "user6@user.com",
-    PhoneNumber: "010-6666-6666",
-    EmailCheck: "False",
-    status: "Active",
-  },
-  {
-    id: 7,
-    user: {
-      name: "user7",
-      role: "USER",
-    },
-    Email: "user7@user.com",
-    PhoneNumber: "010-7777-7777",
-    EmailCheck: "True",
-    status: "Delete",
-  },
-  {
-    id: 8,
-    user: {
-      name: "user8",
-      role: "USER",
-    },
-    Email: "user8@user.com",
-    PhoneNumber: "010-8888-8888",
-    EmailCheck: "True",
-    status: "Active",
-  },
-  {
-    id: 9,
-    user: {
-      name: "user9",
-      role: "USER",
-    },
-    Email: "user9@user.com",
-    PhoneNumber: "010-9999-9999",
-    EmailCheck: "True",
-    status: "Active",
-  },
-  {
-    id: 10,
-    user: {
-      name: "user10",
-      role: "USER",
-    },
-    Email: "user10@user.com",
-    PhoneNumber: "010-1010-1010",
-    EmailCheck: "True",
-    status: "Delete",
-  },
-  {
-    id: 11,
-    user: {
-      name: "user11",
-      role: "USER",
-    },
-    Email: "user11@user.com",
-    PhoneNumber: "010-1001-10001",
-    EmailCheck: "True",
-    status: "Active",
-  },
-];
+import { fetchDashboardUsers } from "../../../services/authService";
 
 const DashboardTable = () => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
+  const [tableData, setTableData] = useState([]);
+  const [totalItems, setTotalItems] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [emailCheckFilter, setEmailCheckFilter] = useState("ALL");
-
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredData = tableData.filter((item) => {
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        setLoading(true);
+        const res = await fetchDashboardUsers(page, itemsPerPage);
+        setTableData(res.users);
+        setTotalItems(res.totalElements);
+      } catch (err) {
+        setError("데이터 로딩 실패");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUsers();
+  }, [page]);
+
+  const filteredData = tableData.filter((user) => {
     const matchesStatus =
-      statusFilter === "ALL" || item.status === statusFilter;
+      statusFilter === "ALL" ||
+      user.status.toLowerCase() === statusFilter.toLowerCase();
+
     const matchesEmailCheck =
-      emailCheckFilter === "ALL" || item.EmailCheck === emailCheckFilter;
+      emailCheckFilter === "ALL" ||
+      (emailCheckFilter === "True" && user.emailVerified) ||
+      (emailCheckFilter === "False" && !user.emailVerified);
     const matchesSearch =
-      item.Email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.user.name.toLowerCase().includes(searchQuery.toLowerCase());
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.username.toLowerCase().includes(searchQuery.toLowerCase());
 
     return matchesStatus && matchesEmailCheck && matchesSearch;
   });
-
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentPageData = filteredData.slice(startIndex, endIndex);
 
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
@@ -202,7 +99,7 @@ const DashboardTable = () => {
           >
             <option value="ALL">전체 상태</option>
             <option value="Active">활동</option>
-            <option value="Delete">비활동</option>
+            <option value="Deleted">비활동</option>
           </select>
 
           {/* 이메일 인증 필터 */}
@@ -218,107 +115,113 @@ const DashboardTable = () => {
         </div>
       </div>
 
-      <div className="max-w-full overflow-x-auto">
-        <Table>
-          {/* Table Header */}
-          <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
-            <TableRow>
-              <TableCell
-                isHeader
-                className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-              >
-                회원 이름
-              </TableCell>
-              <TableCell
-                isHeader
-                className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-              >
-                이메일
-              </TableCell>
-              <TableCell
-                isHeader
-                className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-              >
-                전화번호
-              </TableCell>
-              <TableCell
-                isHeader
-                className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-              >
-                상태
-              </TableCell>
-              <TableCell
-                isHeader
-                className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-              >
-                이메일 인증 여부
-              </TableCell>
-              <TableCell
-                isHeader
-                className="px-3 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-              >
-                삭제
-              </TableCell>
-            </TableRow>
-          </TableHeader>
-
-          {/* Table Body */}
-          <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-            {currentPageData.map((order) => (
-              <TableRow key={order.id}>
-                <TableCell className="px-4 py-4 sm:px-6 text-start">
-                  <div className="flex items-center gap-3">
-                    <div>
-                      <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                        {order.user.name}
-                      </span>
-                      <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
-                        {order.user.role}
-                      </span>
-                    </div>
-                  </div>
+      {loading ? (
+        <div className="p-4">불러오는 중입니다...</div>
+      ) : error ? (
+        <div className="p-4 text-red-500">{error}</div>
+      ) : (
+        <div className="max-w-full overflow-x-auto">
+          <Table>
+            {/* Table Header */}
+            <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
+              <TableRow>
+                <TableCell
+                  isHeader
+                  className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                >
+                  회원 이름
                 </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  {order.Email}
+                <TableCell
+                  isHeader
+                  className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                >
+                  이메일
                 </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  {order.PhoneNumber}
+                <TableCell
+                  isHeader
+                  className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                >
+                  전화번호
                 </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  <Badge
-                    size="sm"
-                    color={order.status === "Active" ? "success" : "error"}
-                  >
-                    {order.status}
-                  </Badge>
+                <TableCell
+                  isHeader
+                  className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                >
+                  상태
                 </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                  <Badge
-                    size="sm"
-                    color={order.EmailCheck === "True" ? "primary" : "light"}
-                  >
-                    {order.EmailCheck}
-                  </Badge>
+                <TableCell
+                  isHeader
+                  className="px-4 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                >
+                  이메일 인증 여부
                 </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                  <button
-                    onClick={() => console.log(`Edit item ${order.id}`)}
-                    className="hover:text-blue-500 transition-colors duration-200"
-                  >
-                    <Trash2 size={16} />
-                  </button>
+                <TableCell
+                  isHeader
+                  className="px-3 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                >
+                  삭제
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <Pagination
-          currentPage={page}
-          totalItems={filteredData.length}
-          itemsPerPage={itemsPerPage}
-          onPageChange={(newPage) => setPage(newPage)}
-        />
-      </div>
+            </TableHeader>
+
+            {/* Table Body */}
+            <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
+              {filteredData.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell className="px-4 py-4 sm:px-6 text-start">
+                    <div className="flex items-center gap-3">
+                      <div>
+                        <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                          {user.username}
+                        </span>
+                        <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
+                          {user.role}
+                        </span>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    {user.email}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    {user.phoneNumber}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    <Badge
+                      size="sm"
+                      color={user.status === "active" ? "success" : "error"}
+                    >
+                      {user.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                    <Badge
+                      size="sm"
+                      color={user.emailVerified ? "primary" : "light"}
+                    >
+                      {user.emailVerified ? "True" : "False"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                    <button
+                      onClick={() => console.log(`Edit item ${user.id}`)}
+                      className="hover:text-blue-500 transition-colors duration-200"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Pagination
+            currentPage={page}
+            totalItems={totalItems}
+            itemsPerPage={itemsPerPage}
+            onPageChange={(newPage) => setPage(newPage)}
+          />
+        </div>
+      )}
     </div>
   );
 };
