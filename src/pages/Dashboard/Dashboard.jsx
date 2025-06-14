@@ -14,11 +14,11 @@ const Dashboard = () => {
         <UserMetrics />
       </div>
       <div className="space-y-6 mt-6">
-        <ComponentCard title="회원 목록">
+        <ComponentCard title="전체 회원 조회">
           <DashboardTable />
         </ComponentCard>
       </div>
     </>
   );
-}
+};
 export default Dashboard;
