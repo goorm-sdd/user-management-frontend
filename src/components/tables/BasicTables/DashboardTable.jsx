@@ -11,7 +11,11 @@ import {
 
 import Badge from "../../ui/badge/Badge";
 import Pagination from "../../ui/pagination/pagination";
-import { fetchDashboardUsers } from "../../../services/authService";
+import {
+  fetchDashboardUsers,
+  searchUsersByEmail,
+  searchUsersByName,
+} from "../../../services/authService";
 
 const DashboardTable = () => {
   const [page, setPage] = useState(1);
@@ -21,6 +25,7 @@ const DashboardTable = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [searchType, setSearchType] = useState("username");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [emailCheckFilter, setEmailCheckFilter] = useState("ALL");
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,7 +34,18 @@ const DashboardTable = () => {
     const loadUsers = async () => {
       try {
         setLoading(true);
-        const res = await fetchDashboardUsers(page, itemsPerPage);
+
+        let res;
+        if (searchQuery) {
+          if (searchType === "username") {
+            res = await searchUsersByName(searchQuery, page, itemsPerPage);
+          } else if (searchType === "email") {
+            res = await searchUsersByEmail(searchQuery, page, itemsPerPage);
+          }
+        } else {
+          res = await fetchDashboardUsers(page, itemsPerPage);
+        }
+
         setTableData(res.users);
         setTotalItems(res.totalElements);
       } catch (err) {
@@ -40,7 +56,7 @@ const DashboardTable = () => {
     };
 
     loadUsers();
-  }, [page]);
+  }, [page, searchQuery, searchType]);
 
   const filteredData = tableData.filter((user) => {
     const matchesStatus =
@@ -62,6 +78,16 @@ const DashboardTable = () => {
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="flex flex-col gap-2 px-4 py-4 border border-b-0 border-gray-100 dark:border-white/[0.05] rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
+          {/* 검색 드롭 다운 */}
+          <select
+            value={searchType}
+            onChange={(e) => setSearchType(e.target.value)}
+            className="dark:bg-dark-900 h-10 w-25 rounded-lg border border-gray-300 bg-transparent pl-1 text-sm text-gray-800 dark:border-gray-700 dark:text-white/90"
+          >
+            <option value="username">이름 검색</option>
+            <option value="email">이메일 검색</option>
+          </select>
+
           {/* 검색 입력 */}
           <div className="relative">
             <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none left-4 top-1/2 dark:text-gray-400">
@@ -83,7 +109,11 @@ const DashboardTable = () => {
             </span>
             <input
               type="text"
-              placeholder="이메일 또는 이름 검색"
+              placeholder={
+                searchType === "username"
+                  ? "회원 이름을 입력하세요"
+                  : "이메일을 입력하세요"
+              }
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="dark:bg-dark-900 h-10 w-full rounded-lg border border-gray-300 bg-transparent py-2.5 pl-11 pr-20 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 xl:w-[300px]"

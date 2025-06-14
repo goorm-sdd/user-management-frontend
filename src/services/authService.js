@@ -51,9 +51,26 @@ export const resetPassword = async ({ username, email }) => {
   return response.data;
 };
 
+// 대시보드
 export const fetchDashboardUsers = async (pageNum, pageLimit) => {
   const response = await axiosInstance.get(
     `/api/admin/users/dashboard?pageNum=${pageNum}&pageLimit=${pageLimit}`
+  );
+  return response.data.data;
+};
+
+// 이름 검색
+export const searchUsersByName = async (username, pageNum, pageLimit) => {
+  const response = await axiosInstance.get(
+    `/api/admin/users/search?username=${username}&pageNum=${pageNum}&pageLimit=${pageLimit}&sortBy=createdAt&sortDir=desc`
+  );
+  return response.data.data;
+};
+
+// 이메일 검색
+export const searchUsersByEmail = async (email, pageNum, pageLimit) => {
+  const response = await axiosInstance.get(
+    `/api/admin/users/search?email=${email}&pageNum=${pageNum}&pageLimit=${pageLimit}&sortBy=createdAt&sortDir=asc`
   );
   return response.data.data;
 };
