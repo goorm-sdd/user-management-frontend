@@ -1,14 +1,31 @@
+import { useEffect, useState } from "react";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
   BoxIconLine,
   GroupIcon,
-  TrashBinIcon,
-  PencilIcon,
 } from "../../icons";
 import Badge from "../ui/badge/Badge";
+import { fetchDashboardUsers } from "../../services/authService";
 
 export default function UserMetrics() {
+  const [sumUser, setSumUser] = useState(0);
+  const [deletedUser, setDeletedUser] = useState(0);
+
+  useEffect(() => {
+    const loadMetrics = async () => {
+      try {
+        const res = await fetchDashboardUsers(1, 1);
+        setSumUser(res.sumUser);
+        setDeletedUser(res.deletedUser);
+      } catch (err) {
+        console.error("회원 수 불러오기 실패", err);
+      }
+    };
+
+    loadMetrics();
+  }, []);
+
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
       {/* <!-- Metric Item Start --> */}
@@ -23,7 +40,7 @@ export default function UserMetrics() {
               전체 회원 수
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              3,782
+              {sumUser.toLocaleString()}
             </h4>
           </div>
           <Badge color="success">
@@ -45,7 +62,7 @@ export default function UserMetrics() {
               탈퇴 회원 수
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              5,359
+              {deletedUser.toLocaleString()}
             </h4>
           </div>
 
