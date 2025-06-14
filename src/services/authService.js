@@ -74,3 +74,9 @@ export const searchUsersByEmail = async (email, pageNum, pageLimit) => {
   );
   return response.data.data;
 };
+
+// 유저 프로필 (내 프로필)
+export const myProfile = async () => {
+  const response = await axiosInstance.get("/api/users/me");
+  return response.data;
+};

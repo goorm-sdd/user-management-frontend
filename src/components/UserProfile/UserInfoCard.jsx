@@ -1,10 +1,26 @@
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { myProfile } from "../../services/authService";
 
 const UserInfoCard = () => {
   const navigate = useNavigate();
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await myProfile();
+        setProfile(res.data);
+      } catch (err) {
+        console.error("프로필 불러오기 실패:", err);
+      }
+    };
+    fetchProfile();
+  }, []);
+
   const handleClick = () => {
-    navigate('/profile-edit');
-  }
+    navigate("/profile-edit");
+  };
   return (
     <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
@@ -14,7 +30,7 @@ const UserInfoCard = () => {
               이름
             </p>
             <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-              홍길동
+              {profile?.username || "로딩 중 .."}
             </p>
           </div>
 
@@ -23,7 +39,7 @@ const UserInfoCard = () => {
               이메일 주소
             </p>
             <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-              randomuser@pimjo.com
+              {profile?.email || "로딩 중 .."}
             </p>
           </div>
 
@@ -32,7 +48,7 @@ const UserInfoCard = () => {
               전화번호
             </p>
             <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-              010-0000-0000
+              {profile?.phoneNumber || "로딩 중 .."}
             </p>
           </div>
           <div className="mt-5">
@@ -40,7 +56,7 @@ const UserInfoCard = () => {
               비밀번호
             </p>
             <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-              **********
+              *********
             </p>
           </div>
         </div>
@@ -69,5 +85,5 @@ const UserInfoCard = () => {
       </div>
     </div>
   );
-}
+};
 export default UserInfoCard;
