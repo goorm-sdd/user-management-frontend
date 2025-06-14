@@ -52,26 +52,46 @@ export const resetPassword = async ({ username, email }) => {
 };
 
 // 대시보드
-export const fetchDashboardUsers = async (pageNum, pageLimit) => {
-  const response = await axiosInstance.get(
-    `/api/admin/users/dashboard?pageNum=${pageNum}&pageLimit=${pageLimit}`
-  );
+export const fetchDashboardUsers = async (pageNum, pageLimit, filters = {}) => {
+  const params = {
+    pageNum,
+    pageLimit,
+    ...filters,
+  };
+  console.log("Fetch Dashboard Users Params:", params);
+
+  const response = await axiosInstance.get("/api/admin/users/dashboard", {
+    params,
+  });
   return response.data.data;
 };
 
-// 이름 검색
-export const searchUsersByName = async (username, pageNum, pageLimit) => {
-  const response = await axiosInstance.get(
-    `/api/admin/users/search?username=${username}&pageNum=${pageNum}&pageLimit=${pageLimit}&sortBy=createdAt&sortDir=desc`
-  );
-  return response.data.data;
-};
+// 검색
+export const searchUsers = async (
+  searchType,
+  searchQuery,
+  pageNum,
+  pageLimit,
+  filters = {}
+) => {
+  const params = {
+    pageNum,
+    pageLimit,
+    ...filters,
+  };
 
-// 이메일 검색
-export const searchUsersByEmail = async (email, pageNum, pageLimit) => {
-  const response = await axiosInstance.get(
-    `/api/admin/users/search?email=${email}&pageNum=${pageNum}&pageLimit=${pageLimit}&sortBy=createdAt&sortDir=asc`
-  );
+  console.log("Search Users Params:", params);
+
+  if (searchType === "email") {
+    params.email = searchQuery;
+  } else if (searchType === "username") {
+    params.username = searchQuery;
+  }
+
+  const response = await axiosInstance.get("/api/admin/users/search", {
+    params,
+  });
+
   return response.data.data;
 };
 
