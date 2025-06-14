@@ -25,13 +25,7 @@ import UserEditProfiles from "./pages/UserProfiles/UserEditProfiles";
 import AdminSignIn from "./pages/AuthPages/AdminSignin";
 import AdminFindID from "./pages/AuthPages/AdminFindID";
 import AdminResetPassword from "./pages/AuthPages/AdminResetPassword";
-import AdminUserDetails from "./pages/UserProfiles/AdminUserDetails";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import DashboardTables from "./pages/Tables/DashboardTables";
-import DeleteUserTables from "./pages/Tables/DeleteUserTables";
-import NotCertifiedUserTables from "./pages/Tables/NotCertifiedUserTables";
-import UserTables from "./pages/Tables/UserTables";
-import FormElements from "./pages/Forms/FormElements";
 
 const App = () => {
   const user = useAuthStore((state) => state.user);
@@ -100,15 +94,6 @@ const App = () => {
             }
           >
             <Route index element={<Dashboard />} />
-            <Route path="user-detail" element={<AdminUserDetails />} />
-            <Route path="form-elements" element={<FormElements />} />
-            <Route path="dashboard-tables" element={<DashboardTables />} />
-            <Route path="user-tables" element={<UserTables />} />
-            <Route path="delete-user" element={<DeleteUserTables />} />
-            <Route
-              path="not-certified-user"
-              element={<NotCertifiedUserTables />}
-            />
           </Route>
 
           {/* 접근 금지 페이지 */}
