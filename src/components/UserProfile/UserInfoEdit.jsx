@@ -6,14 +6,19 @@ import Label from "../form/Label";
 import useAuthStore from '../../store/useAuthStore';
 
 const UserInfoEdit = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const { user } = useAuthStore();
   const { openStep } = useAccountModalStore(); 
 
   useEffect(() => {
-    if (user && user.phoneNumber) {
-      setPhone(user.phoneNumber); // ✅ 초기값 설정
+    if (user) {
+      setUsername(user.username || "");
+      setEmail(user.email || "");
+      setPhone(user.phoneNumber || "");
+      setPassword("");
     }
   }, [user]);
   
@@ -37,7 +42,7 @@ const UserInfoEdit = () => {
   const handleSave = (e) => {
     e.preventDefault();
     // Handle save logic here
-    console.log("Saving changes...", phone);
+    console.log("Saving changes...", { username, email, phone, password });
     alert("변경사항이 저장되었습니다.");
   };
   return (
@@ -54,12 +59,12 @@ const UserInfoEdit = () => {
                     <div className="mt-5">
                         <div className="col-span-2 lg:col-span-1">
                             <Label>이름</Label>
-                            <Input type="text" disabled placeholder="홍길동" />
+                            <Input type="text" disabled placeholder={username} />
                         </div>
 
                         <div className="col-span-2 lg:col-span-1 mt-5">
                             <Label>이메일 주소</Label>
-                            <Input type="text" disabled placeholder="randomuser@pimjo.com" />
+                            <Input type="text" disabled placeholder={email} />
                         </div>
                     </div>
                     <div className="mt-7">
@@ -92,7 +97,12 @@ const UserInfoEdit = () => {
                                     placeholder="*********"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)} />
-                                <Button className="absolute right-0 top-0" disabled={password.trim() === ""} onClick={openPasswordChange}>비밀번호 변경</Button>
+                                <Button 
+                                    className="absolute right-0 top-0" 
+                                    onClick={openPasswordChange}
+                                >
+                                    비밀번호 변경
+                                </Button>
                             </div>
                         </div>
                     </div>
