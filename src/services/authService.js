@@ -185,9 +185,15 @@ export const checkEmailDuplicate = async (email) => {
 };
 
 // 회원 상태 변경
-export const statusChange = async (id, status) => {
-  const response = await axiosInstance.patch(`/api/admin/users/status/${id}`, {
-    status,
-  });
+export const statusChange = async (userId, newStatus, reauthToken) => {
+  const response = await axios.patch(
+    `https://3.39.233.161/api/admin/users/status/${userId}`,
+    { status: newStatus },
+    {
+      headers: {
+        Authorization: `Bearer ${reauthToken}`,
+      },
+    }
+  );
   return response.data;
 };
