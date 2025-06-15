@@ -1,13 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAccountModalStore from '../../store/useAccountModalStore';
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
+import useAuthStore from '../../store/useAuthStore';
 
 const UserInfoEdit = () => {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
+  const { user } = useAuthStore();
   const { openStep } = useAccountModalStore(); 
+
+  useEffect(() => {
+    if (user && user.phoneNumber) {
+      setPhone(user.phoneNumber); // ✅ 초기값 설정
+    }
+  }, [user]);
   
   const openPhoneChange = (e) => {
     e.preventDefault();
@@ -29,7 +37,7 @@ const UserInfoEdit = () => {
   const handleSave = (e) => {
     e.preventDefault();
     // Handle save logic here
-    console.log("Saving changes...");
+    console.log("Saving changes...", phone);
     alert("변경사항이 저장되었습니다.");
   };
   return (
@@ -62,12 +70,18 @@ const UserInfoEdit = () => {
                             <Label>전화번호</Label>
                             <div className="relative pr-32">
                                 <Input
-                                placeholder="010-0000-0000"
+                                placeholder="01000000000"
                                 type="text"
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
                                 />
-                                <Button className="absolute right-0 top-0" disabled={phone.trim() === ""} onClick={openPhoneChange}>전화번호 변경</Button>
+                                <Button 
+                                    className="absolute right-0 top-0" 
+                                    disabled={phone.trim() === ""} 
+                                    onClick={openPhoneChange}
+                                >
+                                    전화번호 변경
+                                </Button>
                             </div>
                         </div>
                         <div className="col-span-2 lg:col-span-1 mt-5">
