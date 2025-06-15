@@ -100,3 +100,31 @@ export const myProfile = async () => {
   const response = await axiosInstance.get("/api/users/me");
   return response.data;
 };
+
+// 회원가입
+export const signUp = async ({
+  username,
+  email,
+  password,
+  passwordCheck,
+  phoneNumber,
+  code,
+}) => {
+  const response = await axiosInstance.post("/api/auth/signup", {
+    username,
+    email,
+    password,
+    passwordCheck,
+    phoneNumber,
+    code,
+  });
+  return response.data;
+};
+
+// 이메일 중복 확인
+export const checkEmailDuplicate = async (email) => {
+  const response = await axiosInstance.post("/api/auth/email", {
+    email,
+  });
+  return response.data;
+};
