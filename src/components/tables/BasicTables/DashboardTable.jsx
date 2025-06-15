@@ -14,6 +14,7 @@ import Pagination from "../../ui/pagination/pagination";
 import {
   fetchDashboardUsers,
   searchUsers,
+  statusChange,
 } from "../../../services/authService";
 
 const DashboardTable = () => {
@@ -73,6 +74,51 @@ const DashboardTable = () => {
 
     loadUsers();
   }, [page, searchQuery, searchType, statusFilter, emailCheckFilter]);
+
+  const handleStatusChange = async (userId, newStatus) => {
+    const confirmMessage =
+      newStatus === "deleted"
+        ? "정말로 이 회원을 삭제하시겠습니까?"
+        : "이 회원을 활성화하시겠습니까?";
+
+    if (window.confirm(confirmMessage)) {
+      try {
+        setLoading(true);
+        await statusChange(userId, newStatus);
+        console.log(`회원 ${userId}의 상태가 ${newStatus}로 변경되었습니다.`);
+
+        // 현재 페이지의 데이터만 다시 로드 (페이지 새로고침 대신)
+        const filters = {};
+        if (statusFilter !== "ALL") {
+          filters.status = statusFilter.toLowerCase();
+        }
+        if (emailCheckFilter !== "ALL") {
+          filters.emailVerified = emailCheckFilter.toLowerCase() === "true";
+        }
+
+        let res;
+        if (searchQuery.trim()) {
+          res = await searchUsers(
+            searchType,
+            searchQuery,
+            page,
+            itemsPerPage,
+            filters
+          );
+        } else {
+          res = await fetchDashboardUsers(page, itemsPerPage, filters);
+        }
+
+        setTableData(res.users);
+        setTotalItems(res.totalElements);
+      } catch (error) {
+        console.error("상태 변경 실패:", error);
+        alert("상태 변경에 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
 
   return (
     <div>
@@ -235,7 +281,7 @@ const DashboardTable = () => {
                     </TableCell>
                     <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                       <button
-                        onClick={() => console.log(`Edit item ${user.id}`)}
+                        onClick={() => handleStatusChange(user.id, "deleted")}
                         className="hover:text-blue-500 transition-colors duration-200"
                       >
                         <Trash2 size={16} />
