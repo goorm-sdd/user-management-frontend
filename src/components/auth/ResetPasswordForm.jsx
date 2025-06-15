@@ -28,7 +28,7 @@ const ResetPasswordForm = ({ role = "user" }) => {
     mode: "onChange",
   });
 
-  const phoneValue = watch("phone") || "";
+  const phoneValue = watch("phoneNumber") || "";
   const codeValue = watch("code") || "";
 
   const [codeVerified, setCodeVerified] = useState(false);
@@ -48,7 +48,7 @@ const ResetPasswordForm = ({ role = "user" }) => {
 
   // 인증번호 발송
   const handleSendCode = async () => {
-    const isValid = await trigger("phone");
+    const isValid = await trigger("phoneNumber");
     if (!isValid) return;
 
     setLoadingSend(true);
@@ -151,7 +151,7 @@ const ResetPasswordForm = ({ role = "user" }) => {
                   <Input
                     className="flex-grow mr-35"
                     placeholder="010-0000-0000"
-                    {...register("phone")}
+                    {...register("phoneNumber")}
                     disabled={codeVerified || loadingSend || submitting}
                   />
                   <Button
@@ -162,9 +162,9 @@ const ResetPasswordForm = ({ role = "user" }) => {
                     {loadingSend ? "발송 중..." : "인증번호 발송"}
                   </Button>
                 </div>
-                {errors.phone && (
+                {errors.phoneNumber && (
                   <p className="mt-1 text-sm text-red-500">
-                    {errors.phone.message}
+                    {errors.phoneNumber.message}
                   </p>
                 )}
                 {message && (
