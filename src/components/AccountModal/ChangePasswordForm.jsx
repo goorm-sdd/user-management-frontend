@@ -3,7 +3,8 @@ import useAccountModalStore from '../../store/useAccountModalStore';
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
-import { verifyPassword } from "../../services/authService";
+import { verifyPassword, changePassword } from "../../services/authService";
+
 
 const ChangePasswordForm = () => {
   const [formStep, setFormStep] = useState('current');
@@ -13,29 +14,29 @@ const ChangePasswordForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showNewPasswordConfirm, setShowNewPasswordConfirm] = useState(false);
+
   const { updateUserData, closeModal } = useAccountModalStore();
 
   const handleCurrentPasswordSubmit = async (e) => {
-      e.preventDefault();
+    e.preventDefault();
 
-      if (!verify.trim()) {
-        alert('현재 비밀번호를 입력해주세요.');
-        return;
-      }
+    if (!verify.trim()) {
+      alert('현재 비밀번호를 입력해주세요.');
+      return;
+    }
 
-      try {
-        const response = await verifyPassword({ password: verify });
-        const reauthToken = response.data.data.reauthToken;
+    try {
+      const response = await verifyPassword({ password: verify });
+      const reauthToken = response.data.data.reauthToken;
+      sessionStorage.setItem("reauthToken", reauthToken);
+      setFormStep('new');
+    } catch (error) {
+      const message = error.response?.data?.message || '비밀번호 인증에 실패했습니다.';
+      alert(message);
+    }
+  };
 
-        sessionStorage.setItem("reauthToken", reauthToken); // 인증 토큰 저장
-        setFormStep('new');
-      } catch (error) {
-        const message = error.response?.data?.message || '비밀번호 인증에 실패했습니다.';
-        alert(message);
-      }
-    };
-    
-  const handleNewPasswordSubmit = (e) => {
+  const handleNewPasswordSubmit = async (e) => {
     e.preventDefault();
 
     if (!password.trim() || !confirm.trim()) {
@@ -47,10 +48,24 @@ const ChangePasswordForm = () => {
       return;
     }
 
-    // 실제 변경 API 호출은 아직 연결 전 (updateUserData는 임시)
-    updateUserData({ password });
-    alert('비밀번호가 변경되었습니다.');
-    closeModal();
+    try {
+      const reauthToken = sessionStorage.getItem('reauthToken');
+      if (!reauthToken || reauthToken === 'undefined') {
+        alert('비밀번호 인증이 만료되었습니다. 다시 시도해주세요.');
+        setFormStep('current');
+        return;
+      }
+
+      // ✅ 토큰 제대로 꺼내와졌는지 확인
+      console.log('reauthToken in password submit:', reauthToken);
+
+      await changePassword(password, confirm, reauthToken); // 문제 지점
+      alert('비밀번호가 변경되었습니다.');
+      sessionStorage.removeItem('reauthToken');
+      closeModal();
+    } catch (error) {
+      alert(error.response?.data?.message || '비밀번호 변경에 실패했습니다.');
+    }
   };
 
 
@@ -98,7 +113,7 @@ const ChangePasswordForm = () => {
         <>
           <div className="relative">
             <Input
-              type="password"
+              type={showNewPasswordConfirm ? "text" : "password"}
               placeholder="새 비밀번호"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -117,7 +132,7 @@ const ChangePasswordForm = () => {
           </div>
           <div className="relative">
             <Input
-              type="password"
+              type={showNewPasswordConfirm ? "text" : "password"}
               placeholder="비밀번호 확인"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}

@@ -1,4 +1,5 @@
 import axiosInstance from "../libs/axiosInstance";
+import axios from "axios";
 
 // 로그인 요청 (일반/관리자 구분)
 export const login = async ({ email, password }) => {
@@ -104,4 +105,18 @@ export const myProfile = async () => {
 // 비밀번호 인증
 export const verifyPassword = async ({ password }) => {
   return axiosInstance.post("/api/users/password/verify", { password });
+};
+
+// 비밀번호 변경
+export const changePassword = (newPassword, newPasswordCheck, reauthToken) => {
+  return axios.patch(
+    "https://3.39.233.161/api/users/me/password", // 풀 URL로
+    { newPassword, newPasswordCheck },
+    {
+      headers: {
+        Authorization: `Bearer ${reauthToken}`,
+      },
+      withCredentials: true, // 쿠키 필요 시
+    }
+  );
 };
