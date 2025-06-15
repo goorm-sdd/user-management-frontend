@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Trash2 } from "lucide-react";
+import { Trash2, Activity } from "lucide-react";
 
 import {
   Table,
@@ -14,6 +14,8 @@ import Pagination from "../../ui/pagination/pagination";
 import {
   fetchDashboardUsers,
   searchUsers,
+  statusChange,
+  verifyPassword
 } from "../../../services/authService";
 
 const DashboardTable = () => {
@@ -73,6 +75,48 @@ const DashboardTable = () => {
 
     loadUsers();
   }, [page, searchQuery, searchType, statusFilter, emailCheckFilter]);
+
+  const handleStatusChange = async (userId, newStatus) => {
+    const confirmMessage =
+      newStatus === "deleted"
+        ? "정말로 이 회원을 삭제하시겠습니까?"
+        : "이 회원을 활성화하시겠습니까?";
+
+    if (!window.confirm(confirmMessage)) return;
+
+    try {
+      const password = prompt("관리자 비밀번호를 입력하세요");
+      if (!password) {
+        alert("비밀번호가 입력되지 않았습니다.");
+        return;
+      }
+
+      const response = await verifyPassword({ password });
+      const reauthToken = response.data.data.reauthToken;
+
+      sessionStorage.setItem("reauthToken", reauthToken);
+
+      setLoading(true);
+      await statusChange(userId, newStatus, reauthToken);
+
+      const filters = {};
+      if (statusFilter !== "ALL") filters.status = statusFilter.toLowerCase();
+      if (emailCheckFilter !== "ALL") filters.emailVerified = emailCheckFilter.toLowerCase() === "true";
+
+      const res = searchQuery.trim()
+        ? await searchUsers(searchType, searchQuery, page, itemsPerPage, filters)
+        : await fetchDashboardUsers(page, itemsPerPage, filters);
+
+      setTableData(res.users);
+      setTotalItems(res.totalElements);
+    } catch (error) {
+      console.error("상태 변경 실패:", error);
+      alert(error?.response?.data?.message || "상태 변경에 실패했습니다. 비밀번호를 확인해주세요.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return (
     <div>
@@ -234,12 +278,23 @@ const DashboardTable = () => {
                       </Badge>
                     </TableCell>
                     <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                      <button
-                        onClick={() => console.log(`Edit item ${user.id}`)}
-                        className="hover:text-blue-500 transition-colors duration-200"
-                      >
-                        <Trash2 size={16} />
-                      </button>
+                      {user.status === "deleted" ? (
+                        <button
+                          onClick={() => handleStatusChange(user.id, "active")}
+                          className="hover:text-green-500 transition-colors duration-200"
+                          title="복구하기"
+                        >
+                          <Activity size={16} />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleStatusChange(user.id, "deleted")}
+                          className="hover:text-red-500 transition-colors duration-200"
+                          title="삭제하기"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

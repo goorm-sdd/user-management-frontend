@@ -104,7 +104,6 @@ export const myProfile = async () => {
   return response.data;
 };
 
-
 // 비밀번호 인증
 export const verifyPassword = async ({ password }) => {
   return axiosInstance.post("/api/users/password/verify", { password });
@@ -125,7 +124,10 @@ export const changePassword = (newPassword, newPasswordCheck, reauthToken) => {
 };
 
 // 전화번호 변경
-export const verifyPhoneCodeAndChangeNumber = async ({ phoneNumber, reauthToken }) => {
+export const verifyPhoneCodeAndChangeNumber = async ({
+  phoneNumber,
+  reauthToken,
+}) => {
   const response = await axios.patch(
     "https://3.39.233.161/api/users/me/phone",
     { phoneNumber },
@@ -182,3 +184,16 @@ export const checkEmailDuplicate = async (email) => {
   return response.data;
 };
 
+// 회원 상태 변경
+export const statusChange = async (userId, newStatus, reauthToken) => {
+  const response = await axios.patch(
+    `https://3.39.233.161/api/admin/users/status/${userId}`,
+    { status: newStatus },
+    {
+      headers: {
+        Authorization: `Bearer ${reauthToken}`,
+      },
+    }
+  );
+  return response.data;
+};
