@@ -44,10 +44,12 @@ export const findEmail = async ({ username, phoneNumber, code }) => {
 };
 
 // 임시 비밀번호 발송
-export const resetPassword = async ({ username, email }) => {
+export const resetPassword = async ({ username, email, phoneNumber, code }) => {
   const response = await axiosInstance.post("/api/auth/find/password", {
     username,
     email,
+    phoneNumber,
+    code,
   });
   return response.data;
 };
@@ -102,6 +104,7 @@ export const myProfile = async () => {
   return response.data;
 };
 
+
 // 비밀번호 인증
 export const verifyPassword = async ({ password }) => {
   return axiosInstance.post("/api/users/password/verify", { password });
@@ -148,6 +151,34 @@ export const deleteAccount = async (reauthToken) => {
       withCredentials: true,
     }
   );
+  return response.data;
+};
+
+// 회원가입
+export const signUp = async ({
+  username,
+  email,
+  password,
+  passwordCheck,
+  phoneNumber,
+  code,
+}) => {
+  const response = await axiosInstance.post("/api/auth/signup", {
+    username,
+    email,
+    password,
+    passwordCheck,
+    phoneNumber,
+    code,
+  });
+  return response.data;
+};
+
+// 이메일 중복 확인
+export const checkEmailDuplicate = async (email) => {
+  const response = await axiosInstance.post("/api/auth/email", {
+    email,
+  });
   return response.data;
 };
 
