@@ -1,4 +1,5 @@
 import axiosInstance from "../libs/axiosInstance";
+import axios from "axios";
 
 // 로그인 요청 (일반/관리자 구분)
 export const login = async ({ email, password }) => {
@@ -103,6 +104,56 @@ export const myProfile = async () => {
   return response.data;
 };
 
+
+// 비밀번호 인증
+export const verifyPassword = async ({ password }) => {
+  return axiosInstance.post("/api/users/password/verify", { password });
+};
+
+// 비밀번호 변경
+export const changePassword = (newPassword, newPasswordCheck, reauthToken) => {
+  return axios.patch(
+    "https://3.39.233.161/api/users/me/password", // 풀 URL로
+    { newPassword, newPasswordCheck },
+    {
+      headers: {
+        Authorization: `Bearer ${reauthToken}`,
+      },
+      withCredentials: true, // 쿠키 필요 시
+    }
+  );
+};
+
+// 전화번호 변경
+export const verifyPhoneCodeAndChangeNumber = async ({ phoneNumber, reauthToken }) => {
+  const response = await axios.patch(
+    "https://3.39.233.161/api/users/me/phone",
+    { phoneNumber },
+    {
+      headers: {
+        Authorization: `Bearer ${reauthToken}`,
+      },
+      withCredentials: true,
+    }
+  );
+  return response.data;
+};
+
+// 회원 탈퇴 요청
+export const deleteAccount = async (reauthToken) => {
+  const response = await axios.patch(
+    "https://3.39.233.161/api/users/me/status",
+    { status: "deleted" },
+    {
+      headers: {
+        Authorization: `Bearer ${reauthToken}`,
+      },
+      withCredentials: true,
+    }
+  );
+  return response.data;
+};
+
 // 회원가입
 export const signUp = async ({
   username,
@@ -130,3 +181,4 @@ export const checkEmailDuplicate = async (email) => {
   });
   return response.data;
 };
+
