@@ -79,20 +79,24 @@ const ChangePhoneForm = () => {
     <form className="space-y-5 p-4 mt-5">
       {formStep === 'password' && (
         <>
-          <h2 className="text-xl font-semibold text-gray-800">비밀번호를 입력해주세요</h2>
+          <h2 className="text-xl font-semibold text-gray-800">비밀번호를 변경</h2>
           <div className="relative">
             <Input
               type={showPassword ? 'text' : 'password'}
-              placeholder="현재 비밀번호"
+              placeholder="현재 비밀번호 확인"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <span
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+              className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
             >
-              {showPassword ? <EyeIcon className="size-5" /> : <EyeCloseIcon className="size-5" />}
+              {showPassword ? (
+                <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+              ) : (
+                <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+              )}            
             </span>
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
