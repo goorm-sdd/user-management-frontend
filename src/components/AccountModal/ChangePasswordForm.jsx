@@ -113,7 +113,7 @@ const ChangePasswordForm = () => {
         <>
           <div className="relative">
             <Input
-              type={showNewPasswordConfirm ? "text" : "password"}
+              type={showNewPassword ? "text" : "password"}
               placeholder="새 비밀번호"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -133,7 +133,7 @@ const ChangePasswordForm = () => {
           <div className="relative">
             <Input
               type={showNewPasswordConfirm ? "text" : "password"}
-              placeholder="비밀번호 확인"
+              placeholder="새 비밀번호 확인"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
