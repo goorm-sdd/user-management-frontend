@@ -1,8 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useAccountModalStore from '../../store/useAccountModalStore';
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
+import {
+  verifyPassword,
+  sendVerificationCode,
+  verifyCode,
+  verifyPhoneCodeAndChangeNumber,
+} from '../../services/authService';
 
 const ChangePhoneForm = () => {
   const [formStep, setFormStep] = useState('password');
@@ -12,168 +18,127 @@ const ChangePhoneForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { updateUserData, closeModal } = useAccountModalStore();
 
-  const verifyPassword = (pw) => {
-    // 임시로 'password123'을 맞는 비밀번호로 가정
-    return pw === 'password123';
+  // 1단계: 비밀번호 인증
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    if (!password.trim()) return alert('비밀번호를 입력해주세요.');
+
+    try {
+      const response = await verifyPassword({ password });
+      const reauthToken = response.data.data.reauthToken;
+      sessionStorage.setItem('reauthToken', reauthToken);
+      setFormStep('phone');
+    } catch (err) {
+      alert(err.response?.data?.message || '비밀번호 인증에 실패했습니다.');
+    }
   };
 
-  // 비밀번호 제출 처리
-  const handlePasswordSubmit = (e) => {
+  // 2단계: 인증코드 전송
+  const handleSendCode = async (e) => {
     e.preventDefault();
-    
-    if (!password.trim()) {
-      alert('비밀번호를 입력해주세요.');
-      return;
-    }
-    
-    if (!verifyPassword(password)) {
-      alert('비밀번호가 일치하지 않습니다.');
-      return;
-    }
-    
-    setFormStep('phone');
-  };
-
-  // 인증코드 전송 처리
-  const handleSendCode = (e) => {
-    e.preventDefault();
-    
-    if (!phone.trim()) {
-      alert('전화번호를 입력해주세요.');
-      return;
-    }
-    
-    // 전화번호 유효성 검사
-    const phoneRegex = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+    const phoneRegex = /^010\d{8}$/;
     if (!phoneRegex.test(phone)) {
-      alert('유효한 전화번호 형식이 아닙니다.');
-      return;
+      return alert('전화번호는 010으로 시작하는 11자리 숫자여야 합니다.');
     }
-    
-    alert(`${phone}로 인증코드가 전송되었습니다. (테스트용)`);
-    setFormStep('verify');
+
+    try {
+      await sendVerificationCode(phone);
+      alert(`${phone}로 인증코드를 전송했습니다.`);
+      setFormStep('verify');
+    } catch (err) {
+      alert(err.response?.data?.message || '인증코드 전송에 실패했습니다.');
+    }
   };
 
-  // 인증코드 검증 처리
-  const handleVerifySubmit = (e) => {
+  // 3단계: 인증코드 확인 및 변경 요청
+  const handleVerifySubmit = async (e) => {
     e.preventDefault();
-    
-    if (!code.trim()) {
-      alert('인증코드를 입력해주세요.');
-      return;
+    if (!code.trim()) return alert('인증코드를 입력해주세요.');
+
+    const reauthToken = sessionStorage.getItem('reauthToken');
+      if (!reauthToken) {
+      alert('인증이 만료되었습니다. 다시 시도해주세요.');
+      return setFormStep('password');
     }
-    
-    // 임시로 '123456'을 맞는 인증코드로 가정
-    if (code !== '123456') {
-      alert('인증코드가 일치하지 않습니다.');
-      return;
+
+    try {
+      await verifyCode({ phoneNumber: phone, code });
+
+      await verifyPhoneCodeAndChangeNumber({ phoneNumber: phone, reauthToken });
+
+      alert(`전화번호가 ${phone}으로 변경되었습니다.`);
+      updateUserData({ phone });
+      sessionStorage.removeItem('reauthToken');
+      closeModal();
+    } catch (err) {
+      alert(err.response?.data?.message || '전화번호 변경에 실패했습니다.');
     }
-    
-    updateUserData({ phone });
-    alert(`전화번호가 ${phone}으로 변경되었습니다.`);
-    closeModal();
   };
 
   return (
     <form className="space-y-5 p-4 mt-5">
       {formStep === 'password' && (
         <>
-        <h2 className="text-xl font-semibold text-gray-800">비밀번호를 입력해주세요</h2>
+          <h2 className="text-xl font-semibold text-gray-800">비밀번호를 입력해주세요</h2>
           <div className="relative">
             <Input
-              type={showPassword ? "text" : "password"}
-              placeholder="현재 비밀번호를 입력해주세요"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="현재 비밀번호"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2"
             />
             <span
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+              className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
             >
-              {showPassword ? (
-                <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-              ) : (
-                <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-              )}
+              {showPassword ? <EyeIcon className="size-5" /> : <EyeCloseIcon className="size-5" />}
             </span>
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <Button
-              onClick={closeModal}
-              className="flex-1 bg-gray-200 text-gray-700 hover:bg-gray-300"
-            >
+            <Button onClick={closeModal} className="bg-gray-200 text-gray-700 hover:bg-gray-300">
               취소
             </Button>
-            <Button
-              type="submit"
-              onClick={handlePasswordSubmit}
-              className="w-full bg-primary text-white rounded-lg py-2 hover:bg-primary-dark transition"
-            >
+            <Button onClick={handlePasswordSubmit} className="bg-primary text-white hover:bg-primary-dark">
               확인
             </Button>
           </div>
         </>
       )}
+
       {formStep === 'phone' && (
         <>
-          <h2 className="text-xl font-semibold text-gray-800">전화번호를 입력해주세요</h2>
-          <div className="grid grid-col-1 grid-flow-col gap-3">
+          <h2 className="text-xl font-semibold text-gray-800">전화번호 입력</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Input
               type="tel"
+              placeholder="01012345678"
               value={phone}
-              placeholder="010-0000-0000"
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2"
             />
-            <Button
-              type="submit"
-              onClick={handleSendCode}
-              className="w-full bg-gray-400 text-white rounded-lg"
-            >
+            <Button onClick={handleSendCode} className="bg-gray-400 text-white">
               인증코드 전송
             </Button>
           </div>
         </>
       )}
-      
-      {/* 3단계: 인증코드 확인 */}
+
       {formStep === 'verify' && (
         <>
-          <h2 className="text-xl font-semibold text-gray-800">인증코드 입력</h2>
-          <p className="text-sm text-gray-600">{phone} 로 전송된 인증코드를 입력하세요.</p>
-          <div className="grid grid-col-1 grid-flow-col gap-3">
+          <h2 className="text-xl font-semibold text-gray-800">인증코드 확인</h2>
+          <p className="text-sm text-gray-600">{phone}로 전송된 인증코드를 입력해주세요.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Input
               type="text"
-              placeholder="인증코드 입력 (예: 123456)"
+              placeholder="인증코드 (예: 123456)"
               value={code}
-              maxLength={6}
               onChange={(e) => setCode(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleVerifySubmit()}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+              maxLength={6}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2"
             />
-            <Button
-              type="submit"
-              onClick={handleVerifySubmit}
-              className="w-full bg-gray-400 text-white rounded-lg py-2 transition"
-            >
+            <Button onClick={handleVerifySubmit} className="bg-primary text-white hover:bg-primary-dark">
               인증 완료
-            </Button>
-          </div>
-          
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <Button
-              onClick={() => setFormStep('phone')}
-              className="flex-1 bg-gray-200 text-gray-700 hover:bg-gray-300"
-            >
-              이전
-            </Button>
-            <Button
-              type="submit"
-              onClick={handleVerifySubmit}
-              className="w-full bg-primary text-white rounded-lg py-2 hover:bg-primary-dark transition"
-            >
-              확인
             </Button>
           </div>
         </>

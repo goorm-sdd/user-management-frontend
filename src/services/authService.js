@@ -120,3 +120,18 @@ export const changePassword = (newPassword, newPasswordCheck, reauthToken) => {
     }
   );
 };
+
+// 전화번호 변경
+export const verifyPhoneCodeAndChangeNumber = async ({ phoneNumber, reauthToken }) => {
+  const response = await axios.patch(
+    "https://3.39.233.161/api/users/me/phone",
+    { phoneNumber },
+    {
+      headers: {
+        Authorization: `Bearer ${reauthToken}`,
+      },
+      withCredentials: true,
+    }
+  );
+  return response.data;
+};
