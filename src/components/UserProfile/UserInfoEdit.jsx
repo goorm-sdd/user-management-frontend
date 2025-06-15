@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import useAccountModalStore from '../../store/useAccountModalStore';
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
@@ -12,6 +13,7 @@ const UserInfoEdit = () => {
   const [phone, setPhone] = useState("");
   const { user } = useAuthStore();
   const { openStep } = useAccountModalStore(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -41,9 +43,9 @@ const UserInfoEdit = () => {
 
   const handleSave = (e) => {
     e.preventDefault();
-    // Handle save logic here
     console.log("Saving changes...", { username, email, phone, password });
     alert("변경사항이 저장되었습니다.");
+    navigate("/profile");
   };
   return (
     <>
