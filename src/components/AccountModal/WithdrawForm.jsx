@@ -3,7 +3,7 @@ import useAccountModalStore from '../../store/useAccountModalStore';
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
-import { verifyPassword, deleteAccount } from '../../services/authService';
+import { verifyPassword, deleteAccount, logout } from '../../services/authService';
 
 const WithdrawForm = () => {
   const [formStep, setFormStep] = useState('withdraw');
@@ -27,10 +27,12 @@ const WithdrawForm = () => {
       const reauthToken = response.data.data.reauthToken;
 
       await deleteAccount(reauthToken);
-      setFormStep('complete');
+      await logout(); // ✅ 로그아웃 처리 (토큰 제거 + 서버 세션 종료)
 
-      sessionStorage.removeItem('reauthToken');
+      sessionStorage.clear(); // ✅ 모든 저장소 정리
       localStorage.clear();
+
+      setFormStep('complete');
     } catch (err) {
       alert(err.response?.data?.message || '회원 탈퇴에 실패했습니다.');
     }
@@ -38,7 +40,7 @@ const WithdrawForm = () => {
 
   const handleComplete = () => {
     closeModal();
-    window.location.href = '/';
+    window.location.href = '/'; // 홈 또는 로그인 화면으로 이동
   };
 
   return (
