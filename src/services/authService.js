@@ -100,3 +100,8 @@ export const myProfile = async () => {
   const response = await axiosInstance.get("/api/users/me");
   return response.data;
 };
+
+// 비밀번호 인증
+export const verifyPassword = async ({ password }) => {
+  return axiosInstance.post("/api/users/password/verify", { password });
+};

@@ -3,6 +3,7 @@ import useAccountModalStore from '../../store/useAccountModalStore';
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
+import { verifyPassword } from "../../services/authService";
 
 const ChangePasswordForm = () => {
   const [formStep, setFormStep] = useState('current');
@@ -14,17 +15,29 @@ const ChangePasswordForm = () => {
   const [showNewPasswordConfirm, setShowNewPasswordConfirm] = useState(false);
   const { updateUserData, closeModal } = useAccountModalStore();
 
-  const handleCurrentPasswordSubmit = (e) => {
+  const handleCurrentPasswordSubmit = async (e) => {
       e.preventDefault();
+
       if (!verify.trim()) {
         alert('현재 비밀번호를 입력해주세요.');
         return;
       }
-      setFormStep('new');
+
+      try {
+        const response = await verifyPassword({ password: verify });
+        const reauthToken = response.data.data.reauthToken;
+
+        sessionStorage.setItem("reauthToken", reauthToken); // 인증 토큰 저장
+        setFormStep('new');
+      } catch (error) {
+        const message = error.response?.data?.message || '비밀번호 인증에 실패했습니다.';
+        alert(message);
+      }
     };
     
-    const handleNewPasswordSubmit = (e) => {
+  const handleNewPasswordSubmit = (e) => {
     e.preventDefault();
+
     if (!password.trim() || !confirm.trim()) {
       alert('모든 필드를 입력해주세요.');
       return;
@@ -33,10 +46,11 @@ const ChangePasswordForm = () => {
       alert('비밀번호가 일치하지 않습니다');
       return;
     }
-      // 실제 확인 로직 필요
-      updateUserData({ password });
-      alert('비밀번호가 변경되었습니다.');
-      closeModal();
+
+    // 실제 변경 API 호출은 아직 연결 전 (updateUserData는 임시)
+    updateUserData({ password });
+    alert('비밀번호가 변경되었습니다.');
+    closeModal();
   };
 
 
