@@ -88,7 +88,12 @@ const ResetPasswordForm = ({ role = "user" }) => {
 
     setSubmitting(true);
     try {
-      await resetPassword({ username: data.name, email: data.email });
+      await resetPassword({
+        username: data.name,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        code: data.code,
+      });
       navigate("/password-sent", { state: { role } });
     } catch (err) {
       alert(err.response?.data?.message || "임시 비밀번호 발송 실패");
