@@ -135,3 +135,19 @@ export const verifyPhoneCodeAndChangeNumber = async ({ phoneNumber, reauthToken 
   );
   return response.data;
 };
+
+// 회원 탈퇴 요청
+export const deleteAccount = async (reauthToken) => {
+  const response = await axios.patch(
+    "https://3.39.233.161/api/users/me/status",
+    { status: "deleted" },
+    {
+      headers: {
+        Authorization: `Bearer ${reauthToken}`,
+      },
+      withCredentials: true,
+    }
+  );
+  return response.data;
+};
+
