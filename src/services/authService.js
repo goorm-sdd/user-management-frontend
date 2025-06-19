@@ -13,7 +13,29 @@ export const login = async ({ email, password }) => {
 // 로그아웃 요청
 export const logout = async (isAdmin = false) => {
   const url = isAdmin ? "/api/admin/signout" : "/api/signout";
-  return await axiosInstance.post(url);
+  const accessToken = sessionStorage.getItem("accessToken");
+
+  try {
+    const res = await axiosInstance.post(
+      url,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        withCredentials: true,
+      }
+    );
+
+    // ✅ accessToken 삭제
+    sessionStorage.removeItem("accessToken");
+
+    return res.data;
+  } catch (err) {
+    console.warn("로그아웃 중 오류 발생", err);
+    sessionStorage.removeItem("accessToken"); // 실패해도 제거는 함
+    throw err;
+  }
 };
 
 // 인증번호 발송
