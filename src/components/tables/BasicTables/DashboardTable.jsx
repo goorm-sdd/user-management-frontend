@@ -18,7 +18,7 @@ import {
   verifyPassword
 } from "../../../services/authService";
 
-const DashboardTable = () => {
+const DashboardTable = ({ onStatusChangeSuccess }) => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
   const [tableData, setTableData] = useState([]);
@@ -114,6 +114,10 @@ const DashboardTable = () => {
       alert(error?.response?.data?.message || "상태 변경에 실패했습니다. 비밀번호를 확인해주세요.");
     } finally {
       setLoading(false);
+
+      if (onStatusChangeSuccess) {
+        onStatusChangeSuccess();
+      }
     }
   };
 

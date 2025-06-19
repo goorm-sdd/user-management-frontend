@@ -8,23 +8,24 @@ import {
 import Badge from "../ui/badge/Badge";
 import { fetchDashboardUsers } from "../../services/authService";
 
-export default function UserMetrics() {
+export default function UserMetrics({ refreshTrigger }) {
   const [sumUser, setSumUser] = useState(0);
   const [deletedUser, setDeletedUser] = useState(0);
 
-  useEffect(() => {
-    const loadMetrics = async () => {
-      try {
-        const res = await fetchDashboardUsers(1, 1);
-        setSumUser(res.sumUser);
-        setDeletedUser(res.deletedUser);
-      } catch (err) {
-        console.error("회원 수 불러오기 실패", err);
-      }
-    };
 
+  const loadMetrics = async () => {
+    try {
+      const res = await fetchDashboardUsers(1, 1);
+      setSumUser(res.sumUser);
+      setDeletedUser(res.deletedUser);
+    } catch (err) {
+      console.error("회원 수 불러오기 실패", err);
+    }
+  };
+
+  useEffect(() => {
     loadMetrics();
-  }, []);
+  }, [refreshTrigger]);
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
